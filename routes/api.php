@@ -20,8 +20,11 @@ use Illuminate\Support\Facades\Route;
 //});
 
 //AUTH
-Route::post('/auth/register', [AuthController::class, 'createUser']);
-Route::post('/auth/login', [AuthController::class, 'loginUser']);
+Route::group(['prefix' => '/auth'], function () {
+    Route::post('/register', [AuthController::class, 'createUser']);
+    Route::post('/login', [AuthController::class, 'loginUser']);
+});
+
 
 
 
