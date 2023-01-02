@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('panels', function (Blueprint $table){
+        Schema::create('kanban_tables', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('tables_id')->constrained();
-            $table->string('name');
+            $table->string('name', 255);
+            $table->char('background', 6);
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::drop('panels');
+        Schema::dropIfExists('kanban_tables');
     }
 };
