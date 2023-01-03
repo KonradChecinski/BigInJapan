@@ -18,7 +18,11 @@ export default function App() {
         <Stack.Screen
           name="Register"
           component={RegisterScreen}
-          options={{ title: 'Register' }}
+          options={{
+            title: 'Utwórz konto',
+            headerTintColor: '#C1DAFF',
+            headerStyle: { backgroundColor: '#435571' },
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

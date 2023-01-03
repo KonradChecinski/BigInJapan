@@ -7,7 +7,7 @@ import LoginComponent from '../components/LoginComponent'
 export default function Login({ navigation }) {
   return (
     <>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
 
       <LinearGradient
         style={styles.container}
@@ -39,18 +39,19 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 125,
+    paddingTop: '25%',
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   image: {
-    width: 250,
-    height: 250,
-    marginBottom: 50,
+    width: '45%',
+    height: '45%',
+    marginBottom: '12%',
   },
   registerTextContainer: {
     flexDirection: 'row',
-    marginBottom: 100,
+    paddingTop: '5%',
+    paddingBottom: '20%',
   },
 })

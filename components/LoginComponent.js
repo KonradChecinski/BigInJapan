@@ -28,16 +28,13 @@ const LoginComponent = () => {
   )
 }
 
-// #161A1D
-
 export default LoginComponent
 
 const styles = StyleSheet.create({
   main: {
     justifyContent: 'space-between',
-    marginBottom: 60,
-    width: 300,
-    height: 200,
+    marginBottom: '15%',
+    width: '75%',
   },
   inputContainer: {
     justifyContent: 'space-between',
@@ -49,8 +46,8 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   logInButtonContainer: {
-    width: 300,
-    marginTop: 50,
+    width: '100%',
+    marginTop: '17%',
     padding: 10,
     alignSelf: 'center',
     alignItems: 'center',
