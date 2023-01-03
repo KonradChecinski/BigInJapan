@@ -1,5 +1,11 @@
 import { StatusBar } from 'expo-status-bar'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 
 import LoginComponent from '../components/LoginComponent'
@@ -24,12 +30,14 @@ export default function Login({ navigation }) {
 
         <View style={styles.registerTextContainer}>
           <Text style={{ color: '#C1DAFF' }}>Nie masz konta? </Text>
-          <Text
-            style={{ color: 'white', fontWeight: 'bold' }}
+          <Pressable
             onPress={() => navigation.navigate('Register')}
+            hitSlop={20}
           >
-            Zarejestruj się
-          </Text>
+            <Text style={{ color: 'white', fontWeight: 'bold' }}>
+              Zarejestruj się
+            </Text>
+          </Pressable>
         </View>
       </LinearGradient>
     </>
@@ -40,9 +48,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: '25%',
-    backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'space-between',
   },
   image: {
     width: '45%',

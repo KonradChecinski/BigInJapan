@@ -11,6 +11,7 @@ const LoginComponent = () => {
         />
 
         <TextInput
+          secureTextEntry={true}
           style={styles.input}
           placeholder="Hasło"
           placeholderTextColor={'#A1B7D8'}
