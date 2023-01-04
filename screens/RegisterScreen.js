@@ -13,6 +13,32 @@ import { useState } from 'react'
 export default function Register({ navigation }) {
   const [isChecked, setChecked] = useState(false)
 
+  const [enteredLogin, setEnteredLogin] = useState('')
+  const [enteredEmail, setEnteredEmail] = useState('')
+  const [enteredPassword, setEnteredPassword] = useState('')
+  const [enteredPasswordAgain, setEnteredPasswordAgain] = useState('')
+
+  const loginInputHandler = (enteredText) => {
+    setEnteredLogin(enteredText)
+  }
+  const emailInputHandler = (enteredText) => {
+    setEnteredEmail(enteredText)
+  }
+  const passwordInputHandler = (enteredText) => {
+    setEnteredPassword(enteredText)
+  }
+  const passwordAgainInputHandler = (enteredText) => {
+    setEnteredPasswordAgain(enteredText)
+  }
+
+  const registerButtonHandler = () => {
+    console.log('Login: ', enteredLogin)
+    console.log('Email: ', enteredEmail)
+    console.log('Password: ', enteredPassword)
+    console.log('PasswordAgain: ', enteredPasswordAgain)
+    console.log('Checkbox: ', isChecked)
+  }
+
   return (
     <>
       <StatusBar style="light" />
@@ -26,17 +52,24 @@ export default function Register({ navigation }) {
         <View style={styles.allInputsContainer}>
           <View style={styles.inputContainer}>
             <Text style={styles.text}>Nazwa użytkownika</Text>
-            <TextInput style={styles.input}></TextInput>
+            <TextInput
+              style={styles.input}
+              onChangeText={loginInputHandler}
+            ></TextInput>
           </View>
           <View style={styles.inputContainer}>
             <Text style={styles.text}>Email</Text>
-            <TextInput style={styles.input}></TextInput>
+            <TextInput
+              style={styles.input}
+              onChangeText={emailInputHandler}
+            ></TextInput>
           </View>
           <View style={styles.inputContainer}>
             <Text style={styles.text}>Hasło</Text>
             <TextInput
               style={styles.input}
               secureTextEntry={true}
+              onChangeText={passwordInputHandler}
             ></TextInput>
           </View>
           <View style={styles.inputContainer}>
@@ -44,6 +77,7 @@ export default function Register({ navigation }) {
             <TextInput
               style={styles.input}
               secureTextEntry={true}
+              onChangeText={passwordAgainInputHandler}
             ></TextInput>
           </View>
         </View>
@@ -72,17 +106,19 @@ export default function Register({ navigation }) {
           </Pressable>
         </View>
 
-        <View style={styles.registerButtonContainer}>
-          <Text
-            style={{
-              color: 'white',
-              fontSize: 15,
-              fontWeight: 'bold',
-            }}
-          >
-            Zarejestruj się
-          </Text>
-        </View>
+        <Pressable onPress={registerButtonHandler}>
+          <View style={styles.registerButtonContainer}>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 15,
+                fontWeight: 'bold',
+              }}
+            >
+              Zarejestruj się
+            </Text>
+          </View>
+        </Pressable>
 
         <View style={styles.logInTextContainer}>
           <Text style={{ color: '#C1DAFF' }}>Masz już konto? </Text>

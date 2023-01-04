@@ -7,10 +7,32 @@ import {
   View,
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
+import { useState } from 'react'
 
 import LoginComponent from '../components/LoginComponent'
 
 export default function Login({ navigation }) {
+  const [enteredLogin, setEnteredLogin] = useState('')
+  const [enteredPassword, setEnteredPassword] = useState('')
+
+  const loginInputHandler = (enteredText) => {
+    setEnteredLogin(enteredText)
+  }
+  const passwordInputHandler = (enteredText) => {
+    setEnteredPassword(enteredText)
+  }
+
+  const loginButtonHandler = () => {
+    console.log('Login: ', enteredLogin)
+    console.log('Password: ', enteredPassword)
+  }
+
+  const registerButtonHandler = () => {
+    setEnteredLogin('')
+    setEnteredPassword('')
+    navigation.navigate('Register')
+  }
+
   return (
     <>
       <StatusBar style="light" />
@@ -26,14 +48,17 @@ export default function Login({ navigation }) {
           style={styles.image}
         />
 
-        <LoginComponent />
+        <LoginComponent
+          onChangeLogin={loginInputHandler}
+          onChangePassword={passwordInputHandler}
+          onClickLoginButton={loginButtonHandler}
+          loginValue={enteredLogin}
+          passwordValue={enteredPassword}
+        />
 
         <View style={styles.registerTextContainer}>
           <Text style={{ color: '#C1DAFF' }}>Nie masz konta? </Text>
-          <Pressable
-            onPress={() => navigation.navigate('Register')}
-            hitSlop={20}
-          >
+          <Pressable onPress={registerButtonHandler} hitSlop={20}>
             <Text style={{ color: 'white', fontWeight: 'bold' }}>
               Zarejestruj się
             </Text>

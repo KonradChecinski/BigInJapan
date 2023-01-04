@@ -5,25 +5,20 @@ import {
   Text,
   Pressable,
 } from 'react-native'
-import { useState } from 'react'
 
-const LoginComponent = () => {
-  //#region State of login and password, handling LOGIN button
-  const [enteredLogin, setEnteredLogin] = useState('')
-  const [enteredPassword, setEnteredPassword] = useState('')
-
+const LoginComponent = ({
+  onChangeLogin,
+  onChangePassword,
+  onClickLoginButton,
+  loginValue,
+  passwordValue,
+}) => {
   const loginInputHandler = (enteredText) => {
-    setEnteredLogin(enteredText)
+    onChangeLogin(enteredText)
   }
   const passwordInputHandler = (enteredText) => {
-    setEnteredPassword(enteredText)
+    onChangePassword(enteredText)
   }
-
-  const loginButtonHandler = () => {
-    console.log(enteredLogin)
-    console.log(enteredPassword)
-  }
-  //#endregion
 
   return (
     <View style={styles.main}>
@@ -33,6 +28,7 @@ const LoginComponent = () => {
           placeholder="Email / Nazwa użytkownika"
           placeholderTextColor={'#A1B7D8'}
           onChangeText={loginInputHandler}
+          value={loginValue}
         />
 
         <TextInput
@@ -41,10 +37,11 @@ const LoginComponent = () => {
           placeholder="Hasło"
           placeholderTextColor={'#A1B7D8'}
           onChangeText={passwordInputHandler}
+          value={passwordValue}
         />
       </View>
 
-      <Pressable onPress={loginButtonHandler}>
+      <Pressable onPress={onClickLoginButton}>
         <View style={styles.logInButtonContainer}>
           <Text
             style={{
