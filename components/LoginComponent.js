@@ -7,14 +7,14 @@ import {
 } from 'react-native'
 
 const LoginComponent = ({
-  onChangeLogin,
+  onChangeEmail,
   onChangePassword,
   onClickLoginButton,
-  loginValue,
+  emailValue,
   passwordValue,
 }) => {
-  const loginInputHandler = (enteredText) => {
-    onChangeLogin(enteredText)
+  const emailInputHandler = (enteredText) => {
+    onChangeEmail(enteredText)
   }
   const passwordInputHandler = (enteredText) => {
     onChangePassword(enteredText)
@@ -25,10 +25,10 @@ const LoginComponent = ({
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Email / Nazwa użytkownika"
+          placeholder="Email"
           placeholderTextColor={'#A1B7D8'}
-          onChangeText={loginInputHandler}
-          value={loginValue}
+          onChangeText={emailInputHandler}
+          value={emailValue}
         />
 
         <TextInput

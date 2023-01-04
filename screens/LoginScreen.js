@@ -12,23 +12,56 @@ import { useState } from 'react'
 import LoginComponent from '../components/LoginComponent'
 
 export default function Login({ navigation }) {
-  const [enteredLogin, setEnteredLogin] = useState('')
+  const [enteredEmail, setEnteredEmail] = useState('')
   const [enteredPassword, setEnteredPassword] = useState('')
 
-  const loginInputHandler = (enteredText) => {
-    setEnteredLogin(enteredText)
+  const emailInputHandler = (enteredText) => {
+    setEnteredEmail(enteredText)
   }
   const passwordInputHandler = (enteredText) => {
     setEnteredPassword(enteredText)
   }
 
   const loginButtonHandler = () => {
-    console.log('Login: ', enteredLogin)
+    console.log('Login: ', enteredEmail)
     console.log('Password: ', enteredPassword)
+
+    // LOGIN FETCH
+    fetch('http://dom.webitup.pl/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        email: enteredEmail,
+        password: enteredPassword,
+      }), // body data type must match "Content-Type" header
+    })
+      .then((response) => {
+        console.log(response.status) // Will show you the status
+        if (!response.ok) {
+          throw new Error('HTTP status ' + response.status)
+        }
+        return response.json()
+      })
+      .then(
+        (result) => {
+          console.log(result)
+        },
+
+        // Uwaga: to ważne, żeby obsłużyć błędy tutaj, a
+        // nie w bloku catch(), aby nie przetwarzać błędów
+        // mających swoje źródło w komponencie.
+        (error) => {
+          console.log('Lipa ')
+          console.log(error)
+        }
+      )
   }
 
   const registerButtonHandler = () => {
-    setEnteredLogin('')
+    setEnteredEmail('')
     setEnteredPassword('')
     navigation.navigate('Register')
   }
@@ -49,10 +82,10 @@ export default function Login({ navigation }) {
         />
 
         <LoginComponent
-          onChangeLogin={loginInputHandler}
+          onChangeEmail={emailInputHandler}
           onChangePassword={passwordInputHandler}
           onClickLoginButton={loginButtonHandler}
-          loginValue={enteredLogin}
+          emailValue={enteredEmail}
           passwordValue={enteredPassword}
         />
 

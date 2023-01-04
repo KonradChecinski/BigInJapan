@@ -37,7 +37,82 @@ export default function Register({ navigation }) {
     console.log('Password: ', enteredPassword)
     console.log('PasswordAgain: ', enteredPasswordAgain)
     console.log('Checkbox: ', isChecked)
+
+    // REGISTER FETCH
+    // fetch('http://dom.webitup.pl/api/auth/register', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Accept: 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     name: enteredLogin,
+    //     email: enteredEmail,
+    //     password: enteredPassword,
+    //   }), // body data type must match "Content-Type" header
+    // })
+    //   .then((response) => {
+    //     console.log(response.status) // Will show you the status
+    //     if (!response.ok) {
+    //       throw new Error('HTTP status ' + response.status)
+    //     }
+    //     return response.json()
+    //   })
+    //   .then(
+    //     (result) => {
+    //       console.log(result)
+    //     },
+
+    //     // Uwaga: to ważne, żeby obsłużyć błędy tutaj, a
+    //     // nie w bloku catch(), aby nie przetwarzać błędów
+    //     // mających swoje źródło w komponencie.
+    //     (error) => {
+    //       console.log('Lipa ')
+    //       console.log(error)
+    //     }
+    //   )
+
+    // TESTOWY FETCH - WYSYŁANIE TOKENA - OD RAZU PO URUCHOMIENIU APLIKACJI
+    fetch('http://dom.webitup.pl/api/', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization:
+          'Bearer 3|rSZZq72D2Xwb4li15fLHmEjfs1JYRiR1xSMOTkLI',
+      },
+      // body: JSON.stringify({
+      //   name: enteredLogin,
+      //   email: enteredEmail,
+      //   password: enteredPassword,
+      // }), // body data type must match "Content-Type" header
+    })
+      .then((response) => {
+        console.log(response.status) // Will show you the status
+        if (!response.ok) {
+          throw new Error('HTTP status ' + response.status)
+        }
+        return response.json()
+      })
+      .then(
+        (result) => {
+          console.log(result)
+        },
+
+        // Uwaga: to ważne, żeby obsłużyć błędy tutaj, a
+        // nie w bloku catch(), aby nie przetwarzać błędów
+        // mających swoje źródło w komponencie.
+        (error) => {
+          console.log('Lipa ')
+          console.log(error)
+        }
+      )
   }
+
+  // 3|rSZZq72D2Xwb4li15fLHmEjfs1JYRiR1xSMOTkLI
+  //   Login:  Akdjj
+  //  LOG  Email:  jan@gmail.com
+  //  LOG  Password:  A1!aaaaaaa
 
   return (
     <>
@@ -106,8 +181,11 @@ export default function Register({ navigation }) {
           </Pressable>
         </View>
 
-        <Pressable onPress={registerButtonHandler}>
-          <View style={styles.registerButtonContainer}>
+        <Pressable
+          style={styles.registerButtonContainer}
+          onPress={registerButtonHandler}
+        >
+          <View>
             <Text
               style={{
                 color: 'white',
@@ -146,7 +224,8 @@ const styles = StyleSheet.create({
   allInputsContainer: {
     justifyContent: 'space-between',
     width: '75%',
-    height: '50%',
+    // height: '50%',
+    height: 360,
   },
   inputContainer: {
     justifyContent: 'space-between',
@@ -156,6 +235,7 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     height: '75%',
+
     borderWidth: 1,
     borderRadius: 5,
     borderColor: '#C1DAFF',
@@ -168,7 +248,7 @@ const styles = StyleSheet.create({
   infoAndCheckBox: {
     flexDirection: 'row',
     width: '75%',
-    marginTop: '13%',
+    marginTop: '10%',
   },
   checkbox: {
     width: 30,
@@ -197,7 +277,7 @@ const styles = StyleSheet.create({
   },
   logInTextContainer: {
     flexDirection: 'row',
-    paddingTop: '5%',
+    paddingTop: '10%',
     paddingBottom: '20%',
   },
 })
