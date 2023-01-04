@@ -1,6 +1,30 @@
-import { View, TextInput, StyleSheet, Text } from 'react-native'
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  Text,
+  Pressable,
+} from 'react-native'
+import { useState } from 'react'
 
 const LoginComponent = () => {
+  //#region State of login and password, handling LOGIN button
+  const [enteredLogin, setEnteredLogin] = useState('')
+  const [enteredPassword, setEnteredPassword] = useState('')
+
+  const loginInputHandler = (enteredText) => {
+    setEnteredLogin(enteredText)
+  }
+  const passwordInputHandler = (enteredText) => {
+    setEnteredPassword(enteredText)
+  }
+
+  const loginButtonHandler = () => {
+    console.log(enteredLogin)
+    console.log(enteredPassword)
+  }
+  //#endregion
+
   return (
     <View style={styles.main}>
       <View style={styles.inputContainer}>
@@ -8,6 +32,7 @@ const LoginComponent = () => {
           style={styles.input}
           placeholder="Email / Nazwa użytkownika"
           placeholderTextColor={'#A1B7D8'}
+          onChangeText={loginInputHandler}
         />
 
         <TextInput
@@ -15,16 +40,23 @@ const LoginComponent = () => {
           style={styles.input}
           placeholder="Hasło"
           placeholderTextColor={'#A1B7D8'}
+          onChangeText={passwordInputHandler}
         />
       </View>
 
-      <View style={styles.logInButtonContainer}>
-        <Text
-          style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}
-        >
-          Zaloguj się
-        </Text>
-      </View>
+      <Pressable onPress={loginButtonHandler}>
+        <View style={styles.logInButtonContainer}>
+          <Text
+            style={{
+              color: 'white',
+              fontSize: 15,
+              fontWeight: 'bold',
+            }}
+          >
+            Zaloguj się
+          </Text>
+        </View>
+      </Pressable>
     </View>
   )
 }
