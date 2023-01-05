@@ -5,6 +5,7 @@ import {
   Text,
   TextInput,
   Pressable,
+  ToastAndroid,
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import Checkbox from 'expo-checkbox'
@@ -13,13 +14,13 @@ import { useState } from 'react'
 export default function Register({ navigation }) {
   const [isChecked, setChecked] = useState(false)
 
-  const [enteredLogin, setEnteredLogin] = useState('')
+  const [enteredName, setenteredName] = useState('')
   const [enteredEmail, setEnteredEmail] = useState('')
   const [enteredPassword, setEnteredPassword] = useState('')
   const [enteredPasswordAgain, setEnteredPasswordAgain] = useState('')
 
-  const loginInputHandler = (enteredText) => {
-    setEnteredLogin(enteredText)
+  const nameInputHandler = (enteredText) => {
+    setenteredName(enteredText)
   }
   const emailInputHandler = (enteredText) => {
     setEnteredEmail(enteredText)
@@ -32,11 +33,30 @@ export default function Register({ navigation }) {
   }
 
   const registerButtonHandler = () => {
-    console.log('Login: ', enteredLogin)
+    console.log('Name: ', enteredName)
     console.log('Email: ', enteredEmail)
     console.log('Password: ', enteredPassword)
     console.log('PasswordAgain: ', enteredPasswordAgain)
     console.log('Checkbox: ', isChecked)
+
+    if (
+      enteredName.length === 0 ||
+      enteredEmail.length === 0 ||
+      enteredPassword.length === 0 ||
+      enteredPasswordAgain.length === 0 ||
+      !isChecked ||
+      enteredPassword !== enteredPasswordAgain
+    ) {
+      // TOAST
+      ToastAndroid.show(
+        'Uzupełnij wszystkie pola, upewnij się że hasła są identyczne i zapoznaj się z polityką prywatności',
+        ToastAndroid.LONG
+      )
+      console.log(
+        'Uzupełnij wszystkie pola, upewnij się że hasła są identyczne i zapoznaj się z polityką prywatności'
+      )
+      return
+    }
 
     // REGISTER FETCH
     // fetch('http://dom.webitup.pl/api/auth/register', {
@@ -46,7 +66,7 @@ export default function Register({ navigation }) {
     //     Accept: 'application/json',
     //   },
     //   body: JSON.stringify({
-    //     name: enteredLogin,
+    //     name: enteredName,
     //     email: enteredEmail,
     //     password: enteredPassword,
     //   }), // body data type must match "Content-Type" header
@@ -82,7 +102,7 @@ export default function Register({ navigation }) {
           'Bearer 3|rSZZq72D2Xwb4li15fLHmEjfs1JYRiR1xSMOTkLI',
       },
       // body: JSON.stringify({
-      //   name: enteredLogin,
+      //   name: enteredName,
       //   email: enteredEmail,
       //   password: enteredPassword,
       // }), // body data type must match "Content-Type" header
@@ -129,7 +149,7 @@ export default function Register({ navigation }) {
             <Text style={styles.text}>Nazwa użytkownika</Text>
             <TextInput
               style={styles.input}
-              onChangeText={loginInputHandler}
+              onChangeText={nameInputHandler}
             ></TextInput>
           </View>
           <View style={styles.inputContainer}>

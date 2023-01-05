@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   View,
+  ToastAndroid,
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useState } from 'react'
@@ -25,6 +26,16 @@ export default function Login({ navigation }) {
   const loginButtonHandler = () => {
     console.log('Login: ', enteredEmail)
     console.log('Password: ', enteredPassword)
+
+    if (enteredEmail.length === 0 || enteredPassword.length === 0) {
+      // TOAST
+      ToastAndroid.show(
+        'Uzupełnij wszystkie pola',
+        ToastAndroid.SHORT
+      )
+      console.log('Uzupełnij wszystkie pola')
+      return
+    }
 
     // LOGIN FETCH
     fetch('http://dom.webitup.pl/api/auth/login', {
@@ -59,6 +70,9 @@ export default function Login({ navigation }) {
         }
       )
   }
+
+  //  LOG  Email:  jan@gmail.com
+  //  LOG  Password:  A1!aaaaaaa
 
   const registerButtonHandler = () => {
     setEnteredEmail('')
