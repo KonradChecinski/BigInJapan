@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   Pressable,
+  Image,
 } from 'react-native'
 
 const LoginComponent = ({
@@ -23,22 +24,30 @@ const LoginComponent = ({
   return (
     <View style={styles.main}>
       <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor={'#A1B7D8'}
-          onChangeText={emailInputHandler}
-          value={emailValue}
-        />
+        <View style={styles.inputEmailAndPasswordContainers}>
+          <Image source={require('../assets/images/user-icon.png')} />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor={'#A1B7D8'}
+            onChangeText={emailInputHandler}
+            value={emailValue}
+          />
+        </View>
 
-        <TextInput
-          secureTextEntry={true}
-          style={styles.input}
-          placeholder="Hasło"
-          placeholderTextColor={'#A1B7D8'}
-          onChangeText={passwordInputHandler}
-          value={passwordValue}
-        />
+        <View style={styles.inputEmailAndPasswordContainers}>
+          <Image
+            source={require('../assets/images/password-icon.png')}
+          />
+          <TextInput
+            secureTextEntry={true}
+            style={styles.input}
+            placeholder="Hasło"
+            placeholderTextColor={'#A1B7D8'}
+            onChangeText={passwordInputHandler}
+            value={passwordValue}
+          />
+        </View>
       </View>
 
       <Pressable onPress={onClickLoginButton}>
@@ -67,12 +76,18 @@ const styles = StyleSheet.create({
     width: '75%',
   },
   inputContainer: {
+    width: '100%',
     justifyContent: 'space-between',
     height: 80,
   },
-  input: {
+  inputEmailAndPasswordContainers: {
+    flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: '#A1B7D8',
+  },
+  input: {
+    width: '100%',
+    marginLeft: 5,
     color: 'white',
   },
   logInButtonContainer: {

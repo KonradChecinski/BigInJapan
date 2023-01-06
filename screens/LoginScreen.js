@@ -9,7 +9,6 @@ import {
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useState } from 'react'
-
 import LoginComponent from '../components/LoginComponent'
 
 export default function Login({ navigation }) {
@@ -26,7 +25,6 @@ export default function Login({ navigation }) {
   const loginButtonHandler = () => {
     console.log('Login: ', enteredEmail)
     console.log('Password: ', enteredPassword)
-
     if (enteredEmail.length === 0 || enteredPassword.length === 0) {
       // TOAST
       ToastAndroid.show(
@@ -60,7 +58,6 @@ export default function Login({ navigation }) {
         (result) => {
           console.log(result)
         },
-
         // Uwaga: to ważne, żeby obsłużyć błędy tutaj, a
         // nie w bloku catch(), aby nie przetwarzać błędów
         // mających swoje źródło w komponencie.
