@@ -10,6 +10,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient'
 import Checkbox from 'expo-checkbox'
 import { useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function Register({ navigation }) {
   const [isChecked, setChecked] = useState(false)
@@ -32,7 +33,44 @@ export default function Register({ navigation }) {
     setEnteredPasswordAgain(enteredText)
   }
 
+  const storeData = async (key, value) => {
+    try {
+      await AsyncStorage.setItem(key, value)
+    } catch (e) {
+      console.log(e)
+    }
+
+    console.log('Stored')
+  }
+
+  const getData = async (key) => {
+    try {
+      const value = await AsyncStorage.getItem(key)
+      if (value !== null) {
+        console.log(value)
+      } else console.log('No token')
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const getAllKeys = async () => {
+    let keys = []
+    try {
+      keys = await AsyncStorage.getAllKeys()
+    } catch (e) {
+      console.log(e)
+    }
+
+    console.log(keys)
+  }
+
   const registerButtonHandler = () => {
+    // storeData('token1', '3|rSZZq72D2Xwb4li15fLHmEjfs1JYRiR1xSMOTkLI')
+    // getData('token1')
+    // getAllKeys()
+    // AsyncStorage.removeItem('test')
+
     console.log('Name: ', enteredName)
     console.log('Email: ', enteredEmail)
     console.log('Password: ', enteredPassword)
@@ -93,40 +131,40 @@ export default function Register({ navigation }) {
     //   )
 
     // TESTOWY FETCH - WYSYŁANIE TOKENA - OD RAZU PO URUCHOMIENIU APLIKACJI
-    fetch('http://dom.webitup.pl/api/', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization:
-          'Bearer 3|rSZZq72D2Xwb4li15fLHmEjfs1JYRiR1xSMOTkLI',
-      },
-      // body: JSON.stringify({
-      //   name: enteredName,
-      //   email: enteredEmail,
-      //   password: enteredPassword,
-      // }), // body data type must match "Content-Type" header
-    })
-      .then((response) => {
-        console.log(response.status) // Will show you the status
-        if (!response.ok) {
-          throw new Error('HTTP status ' + response.status)
-        }
-        return response.json()
-      })
-      .then(
-        (result) => {
-          console.log(result)
-        },
+    // fetch('http://dom.webitup.pl/api/', {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Accept: 'application/json',
+    //     Authorization:
+    //       'Bearer 3|rSZZq72D2Xwb4li15fLHmEjfs1JYRiR1xSMOTkLI',
+    //   },
+    //   // body: JSON.stringify({
+    //   //   name: enteredName,
+    //   //   email: enteredEmail,
+    //   //   password: enteredPassword,
+    //   // }), // body data type must match "Content-Type" header
+    // })
+    //   .then((response) => {
+    //     console.log(response.status) // Will show you the status
+    //     if (!response.ok) {
+    //       throw new Error('HTTP status ' + response.status)
+    //     }
+    //     return response.json()
+    //   })
+    //   .then(
+    //     (result) => {
+    //       console.log(result)
+    //     },
 
-        // Uwaga: to ważne, żeby obsłużyć błędy tutaj, a
-        // nie w bloku catch(), aby nie przetwarzać błędów
-        // mających swoje źródło w komponencie.
-        (error) => {
-          console.log('Lipa ')
-          console.log(error)
-        }
-      )
+    //     // Uwaga: to ważne, żeby obsłużyć błędy tutaj, a
+    //     // nie w bloku catch(), aby nie przetwarzać błędów
+    //     // mających swoje źródło w komponencie.
+    //     (error) => {
+    //       console.log('Lipa ')
+    //       console.log(error)
+    //     }
+    //   )
   }
 
   // 3|rSZZq72D2Xwb4li15fLHmEjfs1JYRiR1xSMOTkLI
