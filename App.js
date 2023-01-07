@@ -1,12 +1,10 @@
-import { NavigationContainer } from '@react-navigation/native'
-import AuthStack from './navigation/AuthStack'
-import AppStack from './navigation/AppStack'
+import { AuthProvider } from './context/AuthContex'
+import AppNav from './navigation/AppNav'
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <AuthStack />
-      {/* <AppStack /> */}
-    </NavigationContainer>
+    <AuthProvider>
+      <AppNav />
+    </AuthProvider>
   )
 }

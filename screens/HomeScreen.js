@@ -1,9 +1,11 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Button } from 'react-native'
+import { useContext } from 'react'
+import { AuthContext } from '../context/AuthContex'
 
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      <Text>HOME SCREEN</Text>
+      <Button title="Wyloguj" />
     </View>
   )
 }
