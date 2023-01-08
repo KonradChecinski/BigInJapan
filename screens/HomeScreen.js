@@ -3,9 +3,16 @@ import { useContext } from 'react'
 import { AuthContext } from '../context/AuthContex'
 
 export default function HomeScreen() {
+  const { logout } = useContext(AuthContext)
+
   return (
     <View style={styles.container}>
-      <Button title="Wyloguj" />
+      <Button
+        title="Wyloguj"
+        onPress={() => {
+          logout()
+        }}
+      />
     </View>
   )
 }

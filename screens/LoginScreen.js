@@ -8,10 +8,13 @@ import {
   ToastAndroid,
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import LoginComponent from '../components/LoginComponent'
+import { AuthContext } from '../context/AuthContex'
 
 export default function Login({ navigation }) {
+  const { login } = useContext(AuthContext)
+
   const [enteredEmail, setEnteredEmail] = useState('')
   const [enteredPassword, setEnteredPassword] = useState('')
 
@@ -23,49 +26,51 @@ export default function Login({ navigation }) {
   }
 
   const loginButtonHandler = () => {
-    console.log('Login: ', enteredEmail)
-    console.log('Password: ', enteredPassword)
-    if (enteredEmail.length === 0 || enteredPassword.length === 0) {
-      // TOAST
-      ToastAndroid.show(
-        'Uzupełnij wszystkie pola',
-        ToastAndroid.SHORT
-      )
-      console.log('Uzupełnij wszystkie pola')
-      return
-    }
+    login()
 
-    // LOGIN FETCH
-    fetch('http://dom.webitup.pl/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify({
-        email: enteredEmail,
-        password: enteredPassword,
-      }), // body data type must match "Content-Type" header
-    })
-      .then((response) => {
-        console.log(response.status) // Will show you the status
-        if (!response.ok) {
-          throw new Error('HTTP status ' + response.status)
-        }
-        return response.json()
-      })
-      .then(
-        (result) => {
-          console.log(result)
-        },
-        // Uwaga: to ważne, żeby obsłużyć błędy tutaj, a
-        // nie w bloku catch(), aby nie przetwarzać błędów
-        // mających swoje źródło w komponencie.
-        (error) => {
-          console.log('Lipa ')
-          console.log(error)
-        }
-      )
+    // console.log('Login: ', enteredEmail)
+    // console.log('Password: ', enteredPassword)
+    // if (enteredEmail.length === 0 || enteredPassword.length === 0) {
+    //   // TOAST
+    //   ToastAndroid.show(
+    //     'Uzupełnij wszystkie pola',
+    //     ToastAndroid.SHORT
+    //   )
+    //   console.log('Uzupełnij wszystkie pola')
+    //   return
+    // }
+
+    // // LOGIN FETCH
+    // fetch('http://dom.webitup.pl/api/auth/login', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Accept: 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     email: enteredEmail,
+    //     password: enteredPassword,
+    //   }), // body data type must match "Content-Type" header
+    // })
+    //   .then((response) => {
+    //     console.log(response.status) // Will show you the status
+    //     if (!response.ok) {
+    //       throw new Error('HTTP status ' + response.status)
+    //     }
+    //     return response.json()
+    //   })
+    //   .then(
+    //     (result) => {
+    //       console.log(result)
+    //     },
+    //     // Uwaga: to ważne, żeby obsłużyć błędy tutaj, a
+    //     // nie w bloku catch(), aby nie przetwarzać błędów
+    //     // mających swoje źródło w komponencie.
+    //     (error) => {
+    //       console.log('Lipa ')
+    //       console.log(error)
+    //     }
+    //   )
   }
 
   //  LOG  Email:  jan@gmail.com
