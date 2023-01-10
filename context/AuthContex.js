@@ -7,13 +7,10 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [userToken, setUserToken] = useState(null)
 
-  const login = () => {
+  const login = (token) => {
     setIsLoading(true)
-    setUserToken('3|rSZZq72D2Xwb4li15fLHmEjfs1JYRiR1xSMOTkLI')
-    AsyncStorage.setItem(
-      'userToken',
-      '3|rSZZq72D2Xwb4li15fLHmEjfs1JYRiR1xSMOTkLI'
-    )
+    setUserToken(token)
+    AsyncStorage.setItem('userToken', token)
     setIsLoading(false)
   }
 
@@ -41,7 +38,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ login, logout, isLoading, userToken }}
+      value={{ login, logout, isLoading, setIsLoading, userToken }}
     >
       {children}
     </AuthContext.Provider>

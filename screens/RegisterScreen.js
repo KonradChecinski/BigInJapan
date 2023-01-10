@@ -9,11 +9,13 @@ import {
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import Checkbox from 'expo-checkbox'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { AuthContext } from '../context/AuthContex'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function Register({ navigation }) {
   const [isChecked, setChecked] = useState(false)
+  const { login, setIsLoading } = useContext(AuthContext)
 
   const [enteredName, setenteredName] = useState('')
   const [enteredEmail, setEnteredEmail] = useState('')
@@ -96,39 +98,46 @@ export default function Register({ navigation }) {
       return
     }
 
+    setIsLoading(true)
     // REGISTER FETCH
-    // fetch('http://dom.webitup.pl/api/auth/register', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Accept: 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     name: enteredName,
-    //     email: enteredEmail,
-    //     password: enteredPassword,
-    //   }), // body data type must match "Content-Type" header
-    // })
-    //   .then((response) => {
-    //     console.log(response.status) // Will show you the status
-    //     if (!response.ok) {
-    //       throw new Error('HTTP status ' + response.status)
-    //     }
-    //     return response.json()
-    //   })
-    //   .then(
-    //     (result) => {
-    //       console.log(result)
-    //     },
+    fetch('http://dom.webitup.pl/api/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        name: enteredName,
+        email: enteredEmail,
+        password: enteredPassword,
+      }), // body data type must match "Content-Type" header
+    })
+      .then((response) => {
+        console.log(`Status: ${response.status}`) // Will show you the status
+        if (!response.ok) {
+          throw new Error('HTTP status ' + response.status)
+        }
+        return response.json()
+      })
+      .then(
+        (result) => {
+          console.log(result.token)
+          login(result.token)
+        },
 
-    //     // Uwaga: to ważne, żeby obsłużyć błędy tutaj, a
-    //     // nie w bloku catch(), aby nie przetwarzać błędów
-    //     // mających swoje źródło w komponencie.
-    //     (error) => {
-    //       console.log('Lipa ')
-    //       console.log(error)
-    //     }
-    //   )
+        // Uwaga: to ważne, żeby obsłużyć błędy tutaj, a
+        // nie w bloku catch(), aby nie przetwarzać błędów
+        // mających swoje źródło w komponencie.
+        (error) => {
+          console.log('Lipa ')
+          console.log(error)
+          ToastAndroid.show(
+            'Hasło musi mieć 1 dużą literę, 1 cyfrę, znak specjalny i min. 8 znaków',
+            ToastAndroid.LONG
+          )
+        }
+      )
+    setIsLoading(false)
 
     // TESTOWY FETCH - WYSYŁANIE TOKENA - OD RAZU PO URUCHOMIENIU APLIKACJI
     // fetch('http://dom.webitup.pl/api/', {

@@ -17,6 +17,7 @@ const AppNav = () => {
           justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: '#435571',
+          opacity: 0.5,
         }}
       >
         <ActivityIndicator size={'large'} />

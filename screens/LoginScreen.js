@@ -13,7 +13,7 @@ import LoginComponent from '../components/LoginComponent'
 import { AuthContext } from '../context/AuthContex'
 
 export default function Login({ navigation }) {
-  const { login } = useContext(AuthContext)
+  const { login, setIsLoading } = useContext(AuthContext)
 
   const [enteredEmail, setEnteredEmail] = useState('')
   const [enteredPassword, setEnteredPassword] = useState('')
@@ -26,55 +26,69 @@ export default function Login({ navigation }) {
   }
 
   const loginButtonHandler = () => {
-    login()
+    // login()
 
-    // console.log('Login: ', enteredEmail)
-    // console.log('Password: ', enteredPassword)
-    // if (enteredEmail.length === 0 || enteredPassword.length === 0) {
-    //   // TOAST
-    //   ToastAndroid.show(
-    //     'Uzupełnij wszystkie pola',
-    //     ToastAndroid.SHORT
-    //   )
-    //   console.log('Uzupełnij wszystkie pola')
-    //   return
-    // }
+    console.log('Login: ', enteredEmail)
+    console.log('Password: ', enteredPassword)
+    if (enteredEmail.length === 0 || enteredPassword.length === 0) {
+      // TOAST
+      ToastAndroid.show(
+        'Uzupełnij wszystkie pola',
+        ToastAndroid.SHORT
+      )
+      console.log('Uzupełnij wszystkie pola')
+      return
+    }
 
-    // // LOGIN FETCH
-    // fetch('http://dom.webitup.pl/api/auth/login', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Accept: 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     email: enteredEmail,
-    //     password: enteredPassword,
-    //   }), // body data type must match "Content-Type" header
-    // })
-    //   .then((response) => {
-    //     console.log(response.status) // Will show you the status
-    //     if (!response.ok) {
-    //       throw new Error('HTTP status ' + response.status)
-    //     }
-    //     return response.json()
-    //   })
-    //   .then(
-    //     (result) => {
-    //       console.log(result)
-    //     },
-    //     // Uwaga: to ważne, żeby obsłużyć błędy tutaj, a
-    //     // nie w bloku catch(), aby nie przetwarzać błędów
-    //     // mających swoje źródło w komponencie.
-    //     (error) => {
-    //       console.log('Lipa ')
-    //       console.log(error)
-    //     }
-    //   )
+    setIsLoading(true)
+    // LOGIN FETCH
+    fetch('http://dom.webitup.pl/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        email: enteredEmail,
+        password: enteredPassword,
+      }), // body data type must match "Content-Type" header
+    })
+      .then((response) => {
+        console.log(`Status: ${response.status}`) // Will show you the status
+        if (!response.ok) {
+          throw new Error('HTTP status ' + response.status)
+        }
+        return response.json()
+      })
+      .then(
+        (result) => {
+          console.log(result.token)
+          login(result.token)
+        },
+        // Uwaga: to ważne, żeby obsłużyć błędy tutaj, a
+        // nie w bloku catch(), aby nie przetwarzać błędów
+        // mających swoje źródło w komponencie.
+        (error) => {
+          console.log('Lipa ')
+          console.log(error)
+          ToastAndroid.show(
+            'Hasło nieprawidłowe lub brak użytkownika',
+            ToastAndroid.LONG
+          )
+        }
+      )
+    setIsLoading(false)
   }
 
   //  LOG  Email:  jan@gmail.com
   //  LOG  Password:  A1!aaaaaaa
+
+  //  Email:  mamgier@gmail.com
+  //  LOG  Password:  A1!aaaaa
+  //  LOG  PasswordAgain:  A1!aaaaa
+  //  LOG  Checkbox:  true
+  //  LOG  Status: 200
+  //  LOG  {"message": "User Created Successfully", "status": true, "token": "2|JItKXcnMEqvHAO5KgORjjrLLsaiXd3ZY6wMgpKFu"}
 
   const registerButtonHandler = () => {
     setEnteredEmail('')
