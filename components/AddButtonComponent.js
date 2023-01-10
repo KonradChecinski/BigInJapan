@@ -1,10 +1,11 @@
 import { Pressable, Image } from 'react-native'
 
-const AddButtonComponent = ({ inTableView }) => {
+const AddButtonComponent = ({ setModalVisible, setMyTable }) => {
   return (
     <Pressable
       onPress={() => {
-        alert(`addButton. inTableView: ${inTableView}`)
+        setMyTable('moja')
+        setModalVisible(true)
       }}
       hitSlop={30}
     >

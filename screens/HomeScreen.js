@@ -1,23 +1,24 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  ScrollView,
-} from 'react-native'
-import { useContext } from 'react'
-import { AuthContext } from '../context/AuthContex'
+import { View, StyleSheet, ScrollView } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { LinearGradient } from 'expo-linear-gradient'
 import TableContainerComponent from '../components/homeScreenComponents/TableContainerComponent'
 import AddButtonComponent from '../components/AddButtonComponent'
+import { useState } from 'react'
+import TableMenuComponent from '../components/homeScreenComponents/TableMenuComponent'
 
 export default function HomeScreen() {
-  const { logout } = useContext(AuthContext)
+  const [modalVisible, setModalVisible] = useState(false)
+  const [myTable, setMyTable] = useState('moja')
 
   return (
     <>
       <StatusBar style="light" />
+
+      <TableMenuComponent
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        myTable={myTable}
+      />
 
       <LinearGradient
         style={styles.container}
@@ -26,13 +27,24 @@ export default function HomeScreen() {
         end={{ x: 0.5, y: 1 }}
       >
         <ScrollView>
-          <TableContainerComponent myTables={true} />
-          <TableContainerComponent myTables={false} />
+          <TableContainerComponent
+            isShared={false}
+            setMyTable={setMyTable}
+            setModalVisible={setModalVisible}
+          />
+          <TableContainerComponent
+            isShared={true}
+            setMyTable={setMyTable}
+            setModalVisible={setModalVisible}
+          />
         </ScrollView>
       </LinearGradient>
 
       <View style={styles.addButton}>
-        <AddButtonComponent inTableView={true} />
+        <AddButtonComponent
+          setModalVisible={setModalVisible}
+          setMyTable={setMyTable}
+        />
       </View>
     </>
   )

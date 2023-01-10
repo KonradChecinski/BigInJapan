@@ -6,14 +6,20 @@ import {
   Pressable,
 } from 'react-native'
 
-const TableComponent = ({ tableName }) => {
+const TableComponent = ({
+  tableName,
+  setMyTable,
+  isShared,
+  setModalVisible,
+}) => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
         <Text style={{ color: 'white' }}>{tableName}</Text>
         <Pressable
           onPress={() => {
-            alert(`Cog button: ${tableName}`)
+            isShared ? setMyTable('nie_moja') : setMyTable('moja')
+            setModalVisible(true)
           }}
           hitSlop={15}
         >

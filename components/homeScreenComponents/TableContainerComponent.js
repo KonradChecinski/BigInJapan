@@ -1,18 +1,37 @@
 import { View, Text, StyleSheet } from 'react-native'
 import TableComponent from './TableComponent'
 
-const TableContainerComponent = ({ myTables }) => {
+const TableContainerComponent = ({
+  setMyTable,
+  isShared,
+  setModalVisible,
+}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        {myTables ? 'Moje tablice' : 'Udostępnione tablice'}
+        {isShared ? 'Udostępnione tablice' : 'Moje tablice'}
       </Text>
 
       {/* Komponenty pojedynczych tablic */}
 
-      <TableComponent tableName={'Test'} bgColor="#435571" />
-      <TableComponent tableName={'Test2'} bgColor="black" />
-      <TableComponent tableName={'Test3'} bgColor="white" />
+      <TableComponent
+        tableName={'Test'}
+        setMyTable={setMyTable}
+        isShared={isShared}
+        setModalVisible={setModalVisible}
+      />
+      <TableComponent
+        tableName={'Test2'}
+        setMyTable={setMyTable}
+        isShared={isShared}
+        setModalVisible={setModalVisible}
+      />
+      <TableComponent
+        tableName={'Test3'}
+        setMyTable={setMyTable}
+        isShared={isShared}
+        setModalVisible={setModalVisible}
+      />
     </View>
   )
 }
