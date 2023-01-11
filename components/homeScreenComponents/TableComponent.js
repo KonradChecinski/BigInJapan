@@ -18,7 +18,7 @@ const TableComponent = ({
         <Text style={{ color: 'white' }}>{tableName}</Text>
         <Pressable
           onPress={() => {
-            isShared ? setMyTable('nie_moja') : setMyTable('moja')
+            isShared ? setMyTable(false) : setMyTable(true)
             setModalVisible(true)
           }}
           hitSlop={15}

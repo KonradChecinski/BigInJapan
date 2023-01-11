@@ -4,7 +4,7 @@ const AddButtonComponent = ({ setModalVisible, setMyTable }) => {
   return (
     <Pressable
       onPress={() => {
-        setMyTable('moja')
+        setMyTable(true)
         setModalVisible(true)
       }}
       hitSlop={30}

@@ -8,7 +8,7 @@ import TableMenuComponent from '../components/homeScreenComponents/TableMenuComp
 
 export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false)
-  const [myTable, setMyTable] = useState('moja')
+  const [myTable, setMyTable] = useState(true)
 
   return (
     <>
