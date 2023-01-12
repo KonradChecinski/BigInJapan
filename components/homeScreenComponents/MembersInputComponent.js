@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   View,
   TextInput,
@@ -6,27 +7,53 @@ import {
   Image,
 } from 'react-native'
 
-const MembersInputComponent = ({ isAdmin, setIsAdmin }) => {
+const MembersInputComponent = ({ myTable, memberName }) => {
+  const [isAdmin, setIsAdmin] = useState('Zwykły')
+
   return (
     <View style={styles.membersInputContainer}>
-      <TextInput style={styles.membersInput} editable={false} />
-      <Pressable
-        style={styles.permissionsInput}
-        hitSlop={30}
-        onPress={() => setIsAdmin(!isAdmin)}
-      >
-        <TextInput
-          style={{ color: 'white', textAlign: 'center' }}
-          editable={false}
-          value={isAdmin ? 'Admin' : 'Zwykły'}
-        />
-      </Pressable>
-      <Pressable>
-        <Image
-          source={require('../../assets/images/circle_x_icon.png')}
-          style={styles.xIcon}
-        />
-      </Pressable>
+      <TextInput
+        style={styles.membersInput}
+        editable={false}
+        value={memberName}
+      />
+      {myTable && (
+        <>
+          <Pressable
+            style={styles.permissionsInput}
+            hitSlop={30}
+            onPress={() => setIsAdmin(!isAdmin)}
+          >
+            <TextInput
+              style={{ color: 'white', textAlign: 'center' }}
+              editable={false}
+              value={isAdmin ? 'Admin' : 'Zwykły'}
+            />
+          </Pressable>
+          <Pressable>
+            <Image
+              source={require('../../assets/images/circle_x_icon.png')}
+              style={styles.xIcon}
+            />
+          </Pressable>
+        </>
+      )}
+      {!myTable && (
+        <>
+          <View
+            style={[
+              styles.permissionsInput,
+              { borderColor: '#1E1E1E', width: '43%' },
+            ]}
+          >
+            <TextInput
+              style={{ color: 'white', textAlign: 'center' }}
+              editable={false}
+              value={isAdmin ? 'Admin' : 'Zwykły'}
+            />
+          </View>
+        </>
+      )}
     </View>
   )
 }

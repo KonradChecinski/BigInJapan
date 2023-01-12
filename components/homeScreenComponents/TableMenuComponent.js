@@ -19,7 +19,16 @@ const TableMenuComponent = ({
   myTable,
   newTable,
 }) => {
-  const [isAdmin, setIsAdmin] = useState(false)
+  const [tableName, setTableName] = useState('')
+  const [tableOwner, setTableOwner] = useState('test')
+  const [tableMembers, setTableMembers] = useState([])
+
+  const tableNameInputHandler = (enteredText) => {
+    setTableName(enteredText)
+  }
+  const tableOwnerInputHandler = (enteredText) => {
+    setOwnerName(enteredText)
+  }
 
   return (
     <Modal
@@ -60,7 +69,22 @@ const TableMenuComponent = ({
           </View>
 
           <View>
-            <TextInput style={styles.input} />
+            {myTable && (
+              <TextInput
+                style={styles.input}
+                onChangeText={tableNameInputHandler}
+                value={tableName}
+              />
+            )}
+          </View>
+          <View>
+            {!myTable && (
+              <TextInput
+                style={[styles.input, { borderColor: '#1E1E1E' }]}
+                editable={false}
+                value={tableName}
+              />
+            )}
           </View>
 
           <View style={styles.tableInfoContainer}>
@@ -70,8 +94,21 @@ const TableMenuComponent = ({
             <Text style={styles.text}>Właściciel tablicy</Text>
           </View>
 
+          {/* <View>
+            {myTable && (
+              <TextInput
+                style={styles.input}
+                onChangeText={tableOwnerInputHandler}
+                value={tableOwner}
+              />
+            )}
+          </View> */}
           <View>
-            <TextInput style={styles.input} />
+            <TextInput
+              style={[styles.input, { borderColor: '#1E1E1E' }]}
+              editable={false}
+              value={tableOwner}
+            />
           </View>
 
           <View style={styles.tableInfoContainer}>
@@ -82,36 +119,20 @@ const TableMenuComponent = ({
           </View>
 
           <View style={styles.members}>
-            <MembersInputComponent
-              isAdmin={isAdmin}
-              setIsAdmin={setIsAdmin}
-            />
-            <MembersInputComponent
-              isAdmin={isAdmin}
-              setIsAdmin={setIsAdmin}
-            />
-            <MembersInputComponent
-              isAdmin={isAdmin}
-              setIsAdmin={setIsAdmin}
-            />
-            <MembersInputComponent
-              isAdmin={isAdmin}
-              setIsAdmin={setIsAdmin}
-            />
-            <MembersInputComponent
-              isAdmin={isAdmin}
-              setIsAdmin={setIsAdmin}
-            />
-            <MembersInputComponent
-              isAdmin={isAdmin}
-              setIsAdmin={setIsAdmin}
-            />
-            <MembersInputComponent
-              isAdmin={isAdmin}
-              setIsAdmin={setIsAdmin}
-            />
+            <MembersInputComponent myTable={myTable} />
+            <MembersInputComponent myTable={myTable} />
+            <MembersInputComponent myTable={myTable} />
+            <MembersInputComponent myTable={myTable} />
+            <MembersInputComponent myTable={myTable} />
+            <MembersInputComponent myTable={myTable} />
+            <MembersInputComponent myTable={myTable} />
 
-            <MenuButtonComponent text={'Zaproś'} color={'#C1DAFF'} />
+            {myTable && (
+              <MenuButtonComponent
+                text={'Zaproś'}
+                color={'#C1DAFF'}
+              />
+            )}
           </View>
         </ScrollView>
 
@@ -182,6 +203,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 20,
     padding: 5,
+    paddingLeft: 10,
     backgroundColor: '#303D52',
     color: 'white',
     borderWidth: 2,
