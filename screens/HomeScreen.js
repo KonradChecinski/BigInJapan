@@ -9,6 +9,7 @@ import TableMenuComponent from '../components/homeScreenComponents/TableMenuComp
 export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false)
   const [myTable, setMyTable] = useState(true)
+  const [newTable, setNewTable] = useState(false)
 
   return (
     <>
@@ -18,6 +19,7 @@ export default function HomeScreen() {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         myTable={myTable}
+        newTable={newTable}
       />
 
       <LinearGradient
@@ -31,11 +33,13 @@ export default function HomeScreen() {
             isShared={false}
             setMyTable={setMyTable}
             setModalVisible={setModalVisible}
+            setNewTable={setNewTable}
           />
           <TableContainerComponent
             isShared={true}
             setMyTable={setMyTable}
             setModalVisible={setModalVisible}
+            setNewTable={setNewTable}
           />
         </ScrollView>
       </LinearGradient>
@@ -44,6 +48,7 @@ export default function HomeScreen() {
         <AddButtonComponent
           setModalVisible={setModalVisible}
           setMyTable={setMyTable}
+          setNewTable={setNewTable}
         />
       </View>
     </>

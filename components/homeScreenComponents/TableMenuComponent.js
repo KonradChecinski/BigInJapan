@@ -10,14 +10,16 @@ import {
   ScrollView,
 } from 'react-native'
 
+import MembersInputComponent from './MembersInputComponent'
+import MenuButtonComponent from './MenuButtonComponent'
+
 const TableMenuComponent = ({
   modalVisible,
   setModalVisible,
   myTable,
+  newTable,
 }) => {
-
   const [isAdmin, setIsAdmin] = useState(false)
-    
 
   return (
     <Modal
@@ -48,47 +50,89 @@ const TableMenuComponent = ({
         </Text>
       </View>
 
-      <ScrollView style={styles.container}>
-        <View style={styles.tableInfoContainer}>
-          <Image
-            source={require('../../assets/images/table_name_icon.png')}
-          />
-          <Text style={styles.text}>Nazwa tablicy</Text>
-        </View>
+      <View style={styles.container}>
+        <ScrollView style={styles.content}>
+          <View style={styles.tableInfoContainer}>
+            <Image
+              source={require('../../assets/images/table_name_icon.png')}
+            />
+            <Text style={styles.text}>Nazwa tablicy</Text>
+          </View>
 
-        <View>
-          <TextInput style={styles.input} />
-        </View>
+          <View>
+            <TextInput style={styles.input} />
+          </View>
 
-        <View style={styles.tableInfoContainer}>
-          <Image
-            source={require('../../assets/images/table_owner_icon.png')}
-          />
-          <Text style={styles.text}>Właściciel tablicy</Text>
-        </View>
+          <View style={styles.tableInfoContainer}>
+            <Image
+              source={require('../../assets/images/table_owner_icon.png')}
+            />
+            <Text style={styles.text}>Właściciel tablicy</Text>
+          </View>
 
-        <View>
-          <TextInput style={styles.input} />
-        </View>
+          <View>
+            <TextInput style={styles.input} />
+          </View>
 
-        <View style={styles.tableInfoContainer}>
-          <Image
-            source={require('../../assets/images/table_members_icon.png')}
-          />
-          <Text style={styles.text}>Członkowie</Text>
-        </View>
+          <View style={styles.tableInfoContainer}>
+            <Image
+              source={require('../../assets/images/table_members_icon.png')}
+            />
+            <Text style={styles.text}>Członkowie</Text>
+          </View>
 
-        <View style={styles.membersInputContainer}>
-          <TextInput style={styles.membersInput} editable={false} />
-          <Pressable
-            style={styles.permissionsInput}
-            hitSlop={30}
-            onPress={() => setIsAdmin(!isAdmin)}
-          >
-            <TextInput style={{color: 'white', textAlign: 'center'}} editable={false} value={isAdmin ? "Admin" : "Zwykły"} />
-          </Pressable>
+          <View style={styles.members}>
+            <MembersInputComponent
+              isAdmin={isAdmin}
+              setIsAdmin={setIsAdmin}
+            />
+            <MembersInputComponent
+              isAdmin={isAdmin}
+              setIsAdmin={setIsAdmin}
+            />
+            <MembersInputComponent
+              isAdmin={isAdmin}
+              setIsAdmin={setIsAdmin}
+            />
+            <MembersInputComponent
+              isAdmin={isAdmin}
+              setIsAdmin={setIsAdmin}
+            />
+            <MembersInputComponent
+              isAdmin={isAdmin}
+              setIsAdmin={setIsAdmin}
+            />
+            <MembersInputComponent
+              isAdmin={isAdmin}
+              setIsAdmin={setIsAdmin}
+            />
+            <MembersInputComponent
+              isAdmin={isAdmin}
+              setIsAdmin={setIsAdmin}
+            />
+
+            <MenuButtonComponent text={'Zaproś'} color={'#C1DAFF'} />
+          </View>
+        </ScrollView>
+
+        <View style={styles.footer}>
+          {myTable && (
+            <MenuButtonComponent text={'Zapisz'} color={'#E6B77D'} />
+          )}
+          {!newTable && myTable && (
+            <MenuButtonComponent
+              text={'Usuń tablicę'}
+              color={'#435571'}
+            />
+          )}
+          {!myTable && (
+            <MenuButtonComponent
+              text={'Opuść tablicę'}
+              color="#435571"
+            />
+          )}
         </View>
-      </ScrollView>
+      </View>
     </Modal>
   )
 }
@@ -114,8 +158,15 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 40,
+    justifyContent: 'space-between',
+    paddingTop: 40,
+    paddingLeft: 25,
+    paddingRight: 25,
+    paddingBottom: 40,
     backgroundColor: '#1E1E1E',
+  },
+  content: {
+    marginBottom: 50,
   },
   tableInfoContainer: {
     flexDirection: 'row',
@@ -137,25 +188,8 @@ const styles = StyleSheet.create({
     borderColor: '#A1B7D8',
     borderRadius: 5,
   },
-  membersInput: {
-    width: '60%',
-    marginBottom: 20,
-    marginRight: 10,
-    padding: 10,
-    backgroundColor: '#303D52',
-    color: 'white',
-    borderRadius: 5,
-  },
-  membersInputContainer: {
-    flexDirection: 'row',
-  },
-  permissionsInput: {
-    width: '36%',
-    marginBottom: 20,
-    padding: 5,
-    backgroundColor: '#303D52',
-    borderWidth: 2,
-    borderColor: '#A1B7D8',
-    borderRadius: 5,
+  members: {
+    width: '100%',
+    marginBottom: 100,
   },
 })

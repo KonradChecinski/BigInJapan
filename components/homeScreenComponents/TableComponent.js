@@ -11,6 +11,7 @@ const TableComponent = ({
   setMyTable,
   isShared,
   setModalVisible,
+  setNewTable,
 }) => {
   return (
     <View style={styles.container}>
@@ -19,6 +20,7 @@ const TableComponent = ({
         <Pressable
           onPress={() => {
             isShared ? setMyTable(false) : setMyTable(true)
+            setNewTable(false)
             setModalVisible(true)
           }}
           hitSlop={15}

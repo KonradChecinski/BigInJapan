@@ -5,6 +5,7 @@ const TableContainerComponent = ({
   setMyTable,
   isShared,
   setModalVisible,
+  setNewTable,
 }) => {
   return (
     <View style={styles.container}>
@@ -19,18 +20,21 @@ const TableContainerComponent = ({
         setMyTable={setMyTable}
         isShared={isShared}
         setModalVisible={setModalVisible}
+        setNewTable={setNewTable}
       />
       <TableComponent
         tableName={'Test2'}
         setMyTable={setMyTable}
         isShared={isShared}
         setModalVisible={setModalVisible}
+        setNewTable={setNewTable}
       />
       <TableComponent
         tableName={'Test3'}
         setMyTable={setMyTable}
         isShared={isShared}
         setModalVisible={setModalVisible}
+        setNewTable={setNewTable}
       />
     </View>
   )
