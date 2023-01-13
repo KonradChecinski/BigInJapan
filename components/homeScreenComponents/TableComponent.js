@@ -12,6 +12,7 @@ const TableComponent = ({
   isShared,
   setModalVisible,
   setNewTable,
+  tableID,
 }) => {
   return (
     <View style={styles.container}>

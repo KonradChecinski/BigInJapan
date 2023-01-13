@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import TableComponent from './TableComponent'
 
@@ -6,7 +7,10 @@ const TableContainerComponent = ({
   isShared,
   setModalVisible,
   setNewTable,
+  tables,
 }) => {
+  // const [tables, setTables] = useState({})
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
@@ -14,28 +18,19 @@ const TableContainerComponent = ({
       </Text>
 
       {/* Komponenty pojedynczych tablic */}
-
-      <TableComponent
-        tableName={'Test'}
-        setMyTable={setMyTable}
-        isShared={isShared}
-        setModalVisible={setModalVisible}
-        setNewTable={setNewTable}
-      />
-      <TableComponent
-        tableName={'Test2'}
-        setMyTable={setMyTable}
-        isShared={isShared}
-        setModalVisible={setModalVisible}
-        setNewTable={setNewTable}
-      />
-      <TableComponent
-        tableName={'Test3'}
-        setMyTable={setMyTable}
-        isShared={isShared}
-        setModalVisible={setModalVisible}
-        setNewTable={setNewTable}
-      />
+      {console.log(tables)}
+      {tables.map((table, key) => {
+        return (
+          <TableComponent
+            tableName={table.name}
+            tableID={table.id}
+            setMyTable={setMyTable}
+            isShared={isShared}
+            setModalVisible={setModalVisible}
+            setNewTable={setNewTable}
+          />
+        )
+      })}
     </View>
   )
 }
