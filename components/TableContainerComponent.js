@@ -9,7 +9,7 @@ const TableContainerComponent = ({
   tables,
   setTableIdState,
   navigation,
-  navigateToMenu,
+  setModalVisible,
 }) => {
   return (
     <View style={styles.container}>
@@ -39,7 +39,7 @@ const TableContainerComponent = ({
               setMyTable={setMyTable}
               isShared={isShared}
               setNewTable={setNewTable}
-              navigateToMenu={navigateToMenu}
+              setModalVisible={setModalVisible}
             />
           </Pressable>
         )

@@ -13,7 +13,7 @@ const TableComponent = ({
   setNewTable,
   tableID,
   setTableIdState,
-  navigateToMenu,
+  setModalVisible,
 }) => {
   return (
     <View style={styles.container}>
@@ -24,7 +24,7 @@ const TableComponent = ({
             isShared ? setMyTable(false) : setMyTable(true)
             setNewTable(false)
             setTableIdState(tableID)
-            navigateToMenu()
+            setModalVisible(true)
           }}
           hitSlop={15}
         >

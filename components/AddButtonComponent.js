@@ -4,15 +4,16 @@ const AddButtonComponent = ({
   setMyTable,
   newTable,
   setNewTable,
-  navigateToMenu,
+  setModalVisible,
+  setTableIdState,
 }) => {
   return (
     <Pressable
       onPress={() => {
+        setTableIdState(null)
         setMyTable(true)
         setNewTable(true)
-        console.log(`Stan newTable z pressa: ${newTable}`)
-        navigateToMenu()
+        setModalVisible(true)
       }}
       hitSlop={30}
     >

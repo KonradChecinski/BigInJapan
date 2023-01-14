@@ -8,30 +8,33 @@ import {
   TextInput,
   ScrollView,
   ActivityIndicator,
+  Modal,
 } from 'react-native'
 
 import { AuthContext } from '../context/AuthContex'
 
-import MembersInputComponent from '../components/MembersInputComponent'
-import MenuButtonComponent from '../components/MenuButtonComponent'
+import MembersInputComponent from './MembersInputComponent'
+import MenuButtonComponent from './MenuButtonComponent'
 
-const TableMenuScreen = ({ route, navigation }) => {
+const TableMenuComponent = ({
+  modalVisible,
+  setModalVisible,
+  myTable,
+  newTable,
+  tableIdState,
+}) => {
   const [tableName, setTableName] = useState('')
   const [tableOwner, setTableOwner] = useState('')
   const [tableMembers, setTableMembers] = useState(null)
 
   const { getData } = useContext(AuthContext)
 
-  const { myTable, newTable, tableIdState } = route.params
-
   const tableNameInputHandler = (enteredText) => {
     setTableName(enteredText)
   }
 
   const getTableInfo = () => {
-    if (!newTable) {
-      console.log(newTable)
-      console.log('getTableInfo if')
+    if (modalVisible && !newTable) {
       getData(`/table/info/${tableIdState}`, 'GET').then(
         (response) => {
           console.log('getData1')
@@ -52,16 +55,43 @@ const TableMenuScreen = ({ route, navigation }) => {
   useEffect(() => {
     console.log('useEffect Menu Component')
     getTableInfo()
-  }, [])
+  }, [tableIdState])
+
+  const loaderOrEmpty = () => {
+    if (newTable) {
+      return <></>
+    } else
+      return (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'black',
+            opacity: 0.5,
+          }}
+        >
+          <ActivityIndicator size={'large'} />
+        </View>
+      )
+  }
 
   return (
-    <>
+    <Modal
+      animationType="slide"
+      visible={modalVisible}
+      onRequestClose={() => {
+        {
+          setModalVisible(false)
+        }
+      }}
+    >
       <View style={styles.header}>
         <Pressable
           style={styles.x_icon}
           hitSlop={30}
           onPress={() => {
-            navigation.goBack()
+            setModalVisible(false)
           }}
         >
           <Image
@@ -154,17 +184,7 @@ const TableMenuScreen = ({ route, navigation }) => {
                 })}
               </>
             ) : (
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: 'black',
-                  opacity: 0.5,
-                }}
-              >
-                <ActivityIndicator size={'large'} />
-              </View>
+              loaderOrEmpty()
             )}
 
             {myTable && (
@@ -194,18 +214,17 @@ const TableMenuScreen = ({ route, navigation }) => {
           )}
         </View>
       </View>
-    </>
+    </Modal>
   )
 }
 
-export default TableMenuScreen
+export default TableMenuComponent
 
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'center',
     padding: 20,
-    paddingTop: 40,
     backgroundColor: '#435571',
   },
   headerText: {
@@ -216,7 +235,7 @@ const styles = StyleSheet.create({
   x_icon: {
     position: 'absolute',
     left: '5%',
-    top: '135%',
+    top: '75%',
   },
   container: {
     flex: 1,

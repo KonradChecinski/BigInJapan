@@ -9,13 +9,11 @@ import { LinearGradient } from 'expo-linear-gradient'
 import TableContainerComponent from '../components/TableContainerComponent'
 import AddButtonComponent from '../components/AddButtonComponent'
 import { useState, useContext, useEffect } from 'react'
-import TableMenuScreen from './TableMenuScreen'
+import TableMenuComponent from '../components/TableMenuComponent'
 import { AuthContext } from '../context/AuthContex.js'
-import { useAsyncStorage } from '@react-native-async-storage/async-storage'
-import { useNavigationState } from '@react-navigation/native'
 
 export default function HomeScreen({ navigation }) {
-  // const [modalVisible, setModalVisible] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false)
   const [myTable, setMyTable] = useState(true)
   const [newTable, setNewTable] = useState(false)
   const [tableIdState, setTableIdState] = useState(null)
@@ -24,9 +22,7 @@ export default function HomeScreen({ navigation }) {
   const [tables, setTables] = useState(null)
 
   const fetchTables = () => {
-    console.log('TU')
     getData('/table/get', 'GET').then((response) => {
-      console.log('TU2')
       setTables(response.result)
     })
   }
@@ -34,27 +30,17 @@ export default function HomeScreen({ navigation }) {
     fetchTables()
   }, [])
 
-  const navigateToMenu = () => {
-    console.log(
-      `Stany: myTable: ${myTable}, newTable: ${newTable}, tableIdState: ${tableIdState}`
-    )
-
-    navigation.navigate('TableMenu', {
-      myTable: myTable,
-      newTable: newTable,
-      tableIdState: tableIdState,
-    })
-  }
-
   return (
     <>
       <StatusBar style="light" />
 
-      {/* <TableMenuComponent
+      <TableMenuComponent
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
         myTable={myTable}
         newTable={newTable}
         tableIdState={tableIdState}
-      /> */}
+      />
 
       <LinearGradient
         style={styles.container}
@@ -72,7 +58,7 @@ export default function HomeScreen({ navigation }) {
                 tables={tables[0]}
                 setTableIdState={setTableIdState}
                 navigation={navigation}
-                navigateToMenu={navigateToMenu}
+                setModalVisible={setModalVisible}
               />
               <TableContainerComponent
                 isShared={true}
@@ -81,7 +67,7 @@ export default function HomeScreen({ navigation }) {
                 tables={tables[1]}
                 setTableIdState={setTableIdState}
                 navigation={navigation}
-                navigateToMenu={navigateToMenu}
+                setModalVisible={setModalVisible}
               />
             </>
           ) : (
@@ -105,7 +91,8 @@ export default function HomeScreen({ navigation }) {
           setMyTable={setMyTable}
           setNewTable={setNewTable}
           newTable={newTable}
-          navigateToMenu={navigateToMenu}
+          setModalVisible={setModalVisible}
+          setTableIdState={setTableIdState}
         />
       </View>
     </>

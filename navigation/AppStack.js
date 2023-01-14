@@ -5,7 +5,6 @@ import { AuthContext } from '../context/AuthContex'
 
 import HomeScreen from '../screens/HomeScreen'
 import TableScreen from '../screens/TableScreen'
-import TableMenuScreen from '../screens/TableMenuScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -31,11 +30,6 @@ const AppStack = () => {
             </Pressable>
           ),
         }}
-      />
-      <Stack.Screen
-        name="TableMenu"
-        component={TableMenuScreen}
-        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Table"
