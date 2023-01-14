@@ -35,6 +35,10 @@ export default function HomeScreen({ navigation }) {
   }, [])
 
   const navigateToMenu = () => {
+    console.log(
+      `Stany: myTable: ${myTable}, newTable: ${newTable}, tableIdState: ${tableIdState}`
+    )
+
     navigation.navigate('TableMenu', {
       myTable: myTable,
       newTable: newTable,
@@ -100,6 +104,7 @@ export default function HomeScreen({ navigation }) {
         <AddButtonComponent
           setMyTable={setMyTable}
           setNewTable={setNewTable}
+          newTable={newTable}
           navigateToMenu={navigateToMenu}
         />
       </View>

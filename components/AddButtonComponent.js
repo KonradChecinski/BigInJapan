@@ -2,6 +2,7 @@ import { Pressable, Image } from 'react-native'
 
 const AddButtonComponent = ({
   setMyTable,
+  newTable,
   setNewTable,
   navigateToMenu,
 }) => {
@@ -10,6 +11,7 @@ const AddButtonComponent = ({
       onPress={() => {
         setMyTable(true)
         setNewTable(true)
+        console.log(`Stan newTable z pressa: ${newTable}`)
         navigateToMenu()
       }}
       hitSlop={30}
