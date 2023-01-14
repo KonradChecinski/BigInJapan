@@ -1,4 +1,9 @@
-import { View, StyleSheet, ScrollView, Button } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { LinearGradient } from 'expo-linear-gradient'
 import TableContainerComponent from '../components/homeScreenComponents/TableContainerComponent'
@@ -9,16 +14,19 @@ import { AuthContext } from '../context/AuthContex.js'
 import { useAsyncStorage } from '@react-native-async-storage/async-storage'
 import { useNavigationState } from '@react-navigation/native'
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false)
   const [myTable, setMyTable] = useState(true)
   const [newTable, setNewTable] = useState(false)
+  const [tableIdState, setTableIdState] = useState(null)
   const { getData } = useContext(AuthContext)
 
-  const [tables, setTables] = useState([])
+  const [tables, setTables] = useState(null)
 
   const fetchTables = () => {
+    console.log('TU')
     getData('/table/get', 'GET').then((response) => {
+      console.log('TU2')
       setTables(response.result)
     })
   }
@@ -35,6 +43,7 @@ export default function HomeScreen() {
         setModalVisible={setModalVisible}
         myTable={myTable}
         newTable={newTable}
+        tableIdState={tableIdState}
       />
 
       <LinearGradient
@@ -44,20 +53,40 @@ export default function HomeScreen() {
         end={{ x: 0.5, y: 1 }}
       >
         <ScrollView>
-          <TableContainerComponent
-            isShared={false}
-            setMyTable={setMyTable}
-            setModalVisible={setModalVisible}
-            setNewTable={setNewTable}
-            tables={tables[0]}
-          />
-          <TableContainerComponent
-            isShared={true}
-            setMyTable={setMyTable}
-            setModalVisible={setModalVisible}
-            setNewTable={setNewTable}
-            tables={tables[1]}
-          />
+          {tables ? (
+            <>
+              <TableContainerComponent
+                isShared={false}
+                setMyTable={setMyTable}
+                setModalVisible={setModalVisible}
+                setNewTable={setNewTable}
+                tables={tables[0]}
+                setTableIdState={setTableIdState}
+                navigation={navigation}
+              />
+              <TableContainerComponent
+                isShared={true}
+                setMyTable={setMyTable}
+                setModalVisible={setModalVisible}
+                setNewTable={setNewTable}
+                tables={tables[1]}
+                setTableIdState={setTableIdState}
+                navigation={navigation}
+              />
+            </>
+          ) : (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'black',
+                opacity: 0.5,
+              }}
+            >
+              <ActivityIndicator size={'large'} />
+            </View>
+          )}
         </ScrollView>
       </LinearGradient>
 
