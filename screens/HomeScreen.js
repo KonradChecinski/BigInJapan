@@ -6,16 +6,16 @@ import {
 } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { LinearGradient } from 'expo-linear-gradient'
-import TableContainerComponent from '../components/homeScreenComponents/TableContainerComponent'
+import TableContainerComponent from '../components/TableContainerComponent'
 import AddButtonComponent from '../components/AddButtonComponent'
 import { useState, useContext, useEffect } from 'react'
-import TableMenuComponent from '../components/homeScreenComponents/TableMenuComponent'
+import TableMenuScreen from './TableMenuScreen'
 import { AuthContext } from '../context/AuthContex.js'
 import { useAsyncStorage } from '@react-native-async-storage/async-storage'
 import { useNavigationState } from '@react-navigation/native'
 
 export default function HomeScreen({ navigation }) {
-  const [modalVisible, setModalVisible] = useState(false)
+  // const [modalVisible, setModalVisible] = useState(false)
   const [myTable, setMyTable] = useState(true)
   const [newTable, setNewTable] = useState(false)
   const [tableIdState, setTableIdState] = useState(null)
@@ -34,17 +34,23 @@ export default function HomeScreen({ navigation }) {
     fetchTables()
   }, [])
 
+  const navigateToMenu = () => {
+    navigation.navigate('TableMenu', {
+      myTable: myTable,
+      newTable: newTable,
+      tableIdState: tableIdState,
+    })
+  }
+
   return (
     <>
       <StatusBar style="light" />
 
-      <TableMenuComponent
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
+      {/* <TableMenuComponent
         myTable={myTable}
         newTable={newTable}
         tableIdState={tableIdState}
-      />
+      /> */}
 
       <LinearGradient
         style={styles.container}
@@ -58,20 +64,20 @@ export default function HomeScreen({ navigation }) {
               <TableContainerComponent
                 isShared={false}
                 setMyTable={setMyTable}
-                setModalVisible={setModalVisible}
                 setNewTable={setNewTable}
                 tables={tables[0]}
                 setTableIdState={setTableIdState}
                 navigation={navigation}
+                navigateToMenu={navigateToMenu}
               />
               <TableContainerComponent
                 isShared={true}
                 setMyTable={setMyTable}
-                setModalVisible={setModalVisible}
                 setNewTable={setNewTable}
                 tables={tables[1]}
                 setTableIdState={setTableIdState}
                 navigation={navigation}
+                navigateToMenu={navigateToMenu}
               />
             </>
           ) : (
@@ -92,9 +98,9 @@ export default function HomeScreen({ navigation }) {
 
       <View style={styles.addButton}>
         <AddButtonComponent
-          setModalVisible={setModalVisible}
           setMyTable={setMyTable}
           setNewTable={setNewTable}
+          navigateToMenu={navigateToMenu}
         />
       </View>
     </>

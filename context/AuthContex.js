@@ -53,7 +53,9 @@ export const AuthProvider = ({ children }) => {
         .then((response) => {
           console.log(`Status: ${response.status}`) // Will show you the status
           if (!response.ok) {
-            throw new Error('HTTP status ' + response.status)
+            if (response.status !== 500)
+              throw new Error('Response ' + response.json())
+            else throw new Error('konrados')
           }
           return response.json()
         })

@@ -10,9 +10,10 @@ const TableComponent = ({
   tableName,
   setMyTable,
   isShared,
-  setModalVisible,
   setNewTable,
   tableID,
+  setTableIdState,
+  navigateToMenu,
 }) => {
   return (
     <View style={styles.container}>
@@ -22,13 +23,13 @@ const TableComponent = ({
           onPress={() => {
             isShared ? setMyTable(false) : setMyTable(true)
             setNewTable(false)
-            // wywołać funkcję zmieniającą stan 'obecnego ID' w HomeScreen.js
-            setModalVisible(true)
+            setTableIdState(tableID)
+            navigateToMenu()
           }}
           hitSlop={15}
         >
           <Image
-            source={require('../../assets/images/iconCog.png')}
+            source={require('../assets/images/iconCog.png')}
             style={styles.image}
           />
         </Pressable>

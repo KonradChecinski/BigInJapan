@@ -1,55 +1,71 @@
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import {
   View,
   Text,
-  Modal,
   StyleSheet,
   Image,
   Pressable,
   TextInput,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native'
 
-import MembersInputComponent from './MembersInputComponent'
-import MenuButtonComponent from './MenuButtonComponent'
+import { AuthContext } from '../context/AuthContex'
 
-const TableMenuComponent = ({
-  modalVisible,
-  setModalVisible,
-  myTable,
-  newTable,
-}) => {
+import MembersInputComponent from '../components/MembersInputComponent'
+import MenuButtonComponent from '../components/MenuButtonComponent'
+
+const TableMenuScreen = ({ route, navigation }) => {
   const [tableName, setTableName] = useState('')
-  const [tableOwner, setTableOwner] = useState('test')
-  const [tableMembers, setTableMembers] = useState([])
+  const [tableOwner, setTableOwner] = useState('')
+  const [tableMembers, setTableMembers] = useState(null)
+
+  const { getData } = useContext(AuthContext)
+
+  const { myTable, newTable, tableIdState } = route.params
 
   const tableNameInputHandler = (enteredText) => {
     setTableName(enteredText)
   }
-  const tableOwnerInputHandler = (enteredText) => {
-    setOwnerName(enteredText)
+
+  const getTableInfo = () => {
+    if (!newTable) {
+      console.log(newTable)
+      console.log('getTableInfo if')
+      getData(`/table/info/${tableIdState}`, 'GET').then(
+        (response) => {
+          console.log('getData1')
+          setTableName(response.result.tableName)
+          setTableOwner(response.result.tableOwner.full_name)
+        }
+      )
+      getData(`/table/shared/${tableIdState}`, 'GET').then(
+        (response) => {
+          console.log('getData2')
+          console.log(response.result)
+          setTableMembers(response.result)
+        }
+      )
+    } else return
   }
 
+  useEffect(() => {
+    console.log('useEffect Menu Component')
+    getTableInfo()
+  }, [])
+
   return (
-    <Modal
-      animationType="slide"
-      visible={modalVisible}
-      onRequestClose={() => {
-        {
-          setModalVisible(false)
-        }
-      }}
-    >
+    <>
       <View style={styles.header}>
         <Pressable
           style={styles.x_icon}
           hitSlop={30}
           onPress={() => {
-            setModalVisible(false)
+            navigation.goBack()
           }}
         >
           <Image
-            source={require('../../assets/images/x_icon.png')}
+            source={require('../assets/images/x_icon.png')}
             style={{ width: 25, height: 25 }}
           />
         </Pressable>
@@ -63,7 +79,7 @@ const TableMenuComponent = ({
         <ScrollView style={styles.content}>
           <View style={styles.tableInfoContainer}>
             <Image
-              source={require('../../assets/images/table_name_icon.png')}
+              source={require('../assets/images/table_name_icon.png')}
             />
             <Text style={styles.text}>Nazwa tablicy</Text>
           </View>
@@ -89,7 +105,7 @@ const TableMenuComponent = ({
 
           <View style={styles.tableInfoContainer}>
             <Image
-              source={require('../../assets/images/table_owner_icon.png')}
+              source={require('../assets/images/table_owner_icon.png')}
             />
             <Text style={styles.text}>Właściciel tablicy</Text>
           </View>
@@ -113,19 +129,43 @@ const TableMenuComponent = ({
 
           <View style={styles.tableInfoContainer}>
             <Image
-              source={require('../../assets/images/table_members_icon.png')}
+              source={require('../assets/images/table_members_icon.png')}
             />
             <Text style={styles.text}>Członkowie</Text>
           </View>
 
           <View style={styles.members}>
-            <MembersInputComponent myTable={myTable} />
-            <MembersInputComponent myTable={myTable} />
-            <MembersInputComponent myTable={myTable} />
-            <MembersInputComponent myTable={myTable} />
-            <MembersInputComponent myTable={myTable} />
-            <MembersInputComponent myTable={myTable} />
-            <MembersInputComponent myTable={myTable} />
+            {tableMembers ? (
+              <>
+                {tableMembers.map((member) => {
+                  if (member.permission !== 2) {
+                    return (
+                      <MembersInputComponent
+                        key={member.unique_name}
+                        myTable={myTable}
+                        tableID={tableIdState}
+                        uniqueName={member.unique_name}
+                        tick={false}
+                        memberName={member.full_name}
+                        memberPermission={member.permission}
+                      />
+                    )
+                  }
+                })}
+              </>
+            ) : (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'black',
+                  opacity: 0.5,
+                }}
+              >
+                <ActivityIndicator size={'large'} />
+              </View>
+            )}
 
             {myTable && (
               <MenuButtonComponent
@@ -154,17 +194,18 @@ const TableMenuComponent = ({
           )}
         </View>
       </View>
-    </Modal>
+    </>
   )
 }
 
-export default TableMenuComponent
+export default TableMenuScreen
 
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'center',
     padding: 20,
+    paddingTop: 40,
     backgroundColor: '#435571',
   },
   headerText: {
@@ -175,7 +216,7 @@ const styles = StyleSheet.create({
   x_icon: {
     position: 'absolute',
     left: '5%',
-    top: '75%',
+    top: '135%',
   },
   container: {
     flex: 1,

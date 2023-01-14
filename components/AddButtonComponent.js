@@ -1,16 +1,16 @@
 import { Pressable, Image } from 'react-native'
 
 const AddButtonComponent = ({
-  setModalVisible,
   setMyTable,
   setNewTable,
+  navigateToMenu,
 }) => {
   return (
     <Pressable
       onPress={() => {
         setMyTable(true)
         setNewTable(true)
-        setModalVisible(true)
+        navigateToMenu()
       }}
       hitSlop={30}
     >

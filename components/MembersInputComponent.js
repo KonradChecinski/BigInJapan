@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import {
   View,
   TextInput,
@@ -6,9 +6,36 @@ import {
   StyleSheet,
   Image,
 } from 'react-native'
+import { AuthContext } from '../context/AuthContex'
 
-const MembersInputComponent = ({ myTable, memberName }) => {
-  const [isAdmin, setIsAdmin] = useState('Zwykły')
+const MembersInputComponent = ({
+  myTable,
+  memberName,
+  uniqueName,
+  tick,
+  memberPermission,
+  tableID,
+}) => {
+  const [isAdmin, setIsAdmin] = useState(false)
+  const { getData } = useContext(AuthContext)
+
+  useEffect(() => {
+    memberPermission && setIsAdmin(true)
+  })
+
+  const onPressPermissionHandler = () => {
+    console.log('korad')
+    console.log(tableID)
+
+    getData(`/table/shared/${tableID}`, 'PUT', {
+      user: uniqueName,
+      permission: !isAdmin,
+    })
+      .then((response) => {
+        console.log(response)
+      })
+      .then(setIsAdmin(!isAdmin))
+  }
 
   return (
     <View style={styles.membersInputContainer}>
@@ -22,7 +49,7 @@ const MembersInputComponent = ({ myTable, memberName }) => {
           <Pressable
             style={styles.permissionsInput}
             hitSlop={30}
-            onPress={() => setIsAdmin(!isAdmin)}
+            onPress={onPressPermissionHandler}
           >
             <TextInput
               style={{ color: 'white', textAlign: 'center' }}
@@ -31,10 +58,17 @@ const MembersInputComponent = ({ myTable, memberName }) => {
             />
           </Pressable>
           <Pressable>
-            <Image
-              source={require('../../assets/images/circle_x_icon.png')}
-              style={styles.xIcon}
-            />
+            {tick ? (
+              <Image
+                source={require('../assets/images/circle_tick_icon.png')}
+                style={styles.icon}
+              />
+            ) : (
+              <Image
+                source={require('../assets/images/circle_x_icon.png')}
+                style={styles.icon}
+              />
+            )}
           </Pressable>
         </>
       )}
@@ -85,8 +119,7 @@ const styles = StyleSheet.create({
     borderColor: '#A1B7D8',
     borderRadius: 5,
   },
-  xIconContainer: {},
-  xIcon: {
+  icon: {
     width: 28,
     height: 28,
   },

@@ -1,13 +1,15 @@
 import { useState } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Pressable } from 'react-native'
 import TableComponent from './TableComponent'
 
 const TableContainerComponent = ({
   setMyTable,
   isShared,
-  setModalVisible,
   setNewTable,
   tables,
+  setTableIdState,
+  navigation,
+  navigateToMenu,
 }) => {
   return (
     <View style={styles.container}>
@@ -19,14 +21,27 @@ const TableContainerComponent = ({
       {console.log(tables)}
       {tables.map((table) => {
         return (
-          <TableComponent
-            tableName={table.name}
-            tableID={table.id}
-            setMyTable={setMyTable}
-            isShared={isShared}
-            setModalVisible={setModalVisible}
-            setNewTable={setNewTable}
-          />
+          <Pressable
+            style={{ width: '100%' }}
+            key={table.table_id}
+            onPress={() =>
+              navigation.navigate('Table', {
+                tableID: table.table_id,
+                tableName: table.name,
+                tablePermission: table.permission,
+              })
+            }
+          >
+            <TableComponent
+              tableName={table.name}
+              tableID={table.table_id}
+              setTableIdState={setTableIdState}
+              setMyTable={setMyTable}
+              isShared={isShared}
+              setNewTable={setNewTable}
+              navigateToMenu={navigateToMenu}
+            />
+          </Pressable>
         )
       })}
     </View>
