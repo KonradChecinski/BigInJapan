@@ -22,6 +22,7 @@ const TableComponent = ({
           onPress={() => {
             isShared ? setMyTable(false) : setMyTable(true)
             setNewTable(false)
+            // wywołać funkcję zmieniającą stan 'obecnego ID' w HomeScreen.js
             setModalVisible(true)
           }}
           hitSlop={15}

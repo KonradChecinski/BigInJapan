@@ -9,8 +9,6 @@ const TableContainerComponent = ({
   setNewTable,
   tables,
 }) => {
-  // const [tables, setTables] = useState({})
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
@@ -19,7 +17,7 @@ const TableContainerComponent = ({
 
       {/* Komponenty pojedynczych tablic */}
       {console.log(tables)}
-      {tables.map((table, key) => {
+      {tables.map((table) => {
         return (
           <TableComponent
             tableName={table.name}
