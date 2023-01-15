@@ -18,7 +18,7 @@ const TableContainerComponent = ({
       </Text>
 
       {/* Komponenty pojedynczych tablic */}
-      {console.log(tables)}
+      {/* {console.log(tables)} */}
       {tables.map((table) => {
         return (
           <Pressable
@@ -59,8 +59,6 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     marginBottom: 50,
     backgroundColor: '#E6B77D',
-    borderWidth: 1,
-    borderColor: 'red',
   },
   title: {
     color: '#435571',

@@ -1,4 +1,5 @@
-import { useContext, useEffect, useState } from 'react'
+import { getActionFromState } from '@react-navigation/native'
+import { useContext, useEffect, useState, useReducer } from 'react'
 import {
   View,
   Text,
@@ -9,6 +10,8 @@ import {
   ScrollView,
   ActivityIndicator,
   Modal,
+  Alert,
+  ToastAndroid,
 } from 'react-native'
 
 import { AuthContext } from '../context/AuthContex'
@@ -22,12 +25,27 @@ const TableMenuComponent = ({
   myTable,
   newTable,
   tableIdState,
+  setTableIdState,
+  homeScreenChanged,
+  setHomeScreenChanged,
 }) => {
   const [tableName, setTableName] = useState('')
   const [tableOwner, setTableOwner] = useState('')
   const [tableMembers, setTableMembers] = useState(null)
+  const [newMemberVisible, setNewMemberVisible] = useState(false)
+  const [menuChanged, setMenuChanged] = useState(0)
 
   const { getData } = useContext(AuthContext)
+
+  const clearState = () => {
+    setTableIdState(null)
+    setTableMembers(null)
+    setTableName('')
+    setTableOwner('')
+    setNewMemberVisible(false)
+
+    setHomeScreenChanged(homeScreenChanged + 1)
+  }
 
   const tableNameInputHandler = (enteredText) => {
     setTableName(enteredText)
@@ -37,25 +55,89 @@ const TableMenuComponent = ({
     if (modalVisible && !newTable) {
       getData(`/table/info/${tableIdState}`, 'GET').then(
         (response) => {
-          console.log('getData1')
+          // console.log('getData1')
           setTableName(response.result.tableName)
           setTableOwner(response.result.tableOwner.full_name)
         }
       )
       getData(`/table/shared/${tableIdState}`, 'GET').then(
         (response) => {
-          console.log('getData2')
-          console.log(response.result)
+          // console.log('getData2')
+          // console.log(response.result)
           setTableMembers(response.result)
         }
       )
     } else return
   }
-
   useEffect(() => {
     console.log('useEffect Menu Component')
     getTableInfo()
-  }, [tableIdState])
+  }, [tableIdState, menuChanged])
+
+  const saveTable = () => {
+    if (!newTable) {
+      getData(`/table/name/${tableIdState}`, 'PUT', {
+        name: tableName,
+      }).then((response) => {
+        console.log(response)
+        if (response.status === true) {
+          ToastAndroid.show(
+            'Nazwa tablicy została zapisana',
+            ToastAndroid.LONG
+          )
+        } else {
+          ToastAndroid.show(
+            'Coś poszło nie tak, sprawdź połączenie z siecią',
+            ToastAndroid.LONG
+          )
+        }
+      })
+    } else {
+      if (tableName !== '') {
+        getData('/table', 'POST', {
+          name: tableName,
+        }).then((response) => {
+          console.log(response)
+          if (response.status === true) {
+            ToastAndroid.show(
+              'Tablica została utworzona',
+              ToastAndroid.LONG
+            )
+            clearState()
+            setModalVisible(false)
+          } else {
+            ToastAndroid.show(
+              'Coś poszło nie tak, sprawdź połączenie z siecią',
+              ToastAndroid.LONG
+            )
+          }
+        })
+      } else {
+        ToastAndroid.show('Podaj nazwę tablicy', ToastAndroid.LONG)
+      }
+    }
+  }
+  const inviteMembers = () => {
+    setNewMemberVisible(!newMemberVisible)
+  }
+  const deleteTable = () => {
+    getData(`/table/${tableIdState}`, 'DELETE').then((response) => {
+      if (response.status === true) {
+        console.log(response)
+        ToastAndroid.show(
+          'Tablica została usunięta',
+          ToastAndroid.LONG
+        )
+        setModalVisible(false)
+        clearState()
+      } else {
+        ToastAndroid.show(
+          'Coś poszło nie tak, sprawdź połączenie z siecią',
+          ToastAndroid.LONG
+        )
+      }
+    })
+  }
 
   const loaderOrEmpty = () => {
     if (newTable) {
@@ -83,6 +165,7 @@ const TableMenuComponent = ({
       onRequestClose={() => {
         {
           setModalVisible(false)
+          clearState()
         }
       }}
     >
@@ -92,6 +175,7 @@ const TableMenuComponent = ({
           hitSlop={30}
           onPress={() => {
             setModalVisible(false)
+            clearState()
           }}
         >
           <Image
@@ -178,6 +262,8 @@ const TableMenuComponent = ({
                         tick={false}
                         memberName={member.full_name}
                         memberPermission={member.permission}
+                        setMenuChanged={setMenuChanged}
+                        menuChanged={menuChanged}
                       />
                     )
                   }
@@ -187,23 +273,48 @@ const TableMenuComponent = ({
               loaderOrEmpty()
             )}
 
-            {myTable && (
+            {newMemberVisible && (
+              <MembersInputComponent
+                myTable={myTable}
+                tableID={tableIdState}
+                uniqueName={''}
+                tick={true}
+                memberName={''}
+                memberPermission={0}
+                setNewMemberVisible={setNewMemberVisible}
+                setMenuChanged={setMenuChanged}
+                menuChanged={menuChanged}
+              />
+            )}
+
+            {myTable && !newTable && (
               <MenuButtonComponent
                 text={'Zaproś'}
                 color={'#C1DAFF'}
+                onPressButton={inviteMembers}
               />
+            )}
+            {newTable && (
+              <Text style={styles.text}>
+                Zaproś członków z ekranu głównego
+              </Text>
             )}
           </View>
         </ScrollView>
 
         <View style={styles.footer}>
           {myTable && (
-            <MenuButtonComponent text={'Zapisz'} color={'#E6B77D'} />
+            <MenuButtonComponent
+              text={'Zapisz'}
+              color={'#E6B77D'}
+              onPressButton={saveTable}
+            />
           )}
           {!newTable && myTable && (
             <MenuButtonComponent
               text={'Usuń tablicę'}
               color={'#435571'}
+              onPressButton={deleteTable}
             />
           )}
           {!myTable && (

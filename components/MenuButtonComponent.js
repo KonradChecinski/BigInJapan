@@ -1,9 +1,9 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 import React from 'react'
 
-const MenuButtonComponent = ({ text, color }) => {
+const MenuButtonComponent = ({ text, color, onPressButton }) => {
   return (
-    <Pressable>
+    <Pressable onPress={onPressButton}>
       <View
         color={color}
         style={[styles.buttonContainer, { backgroundColor: color }]}
