@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('kanban_tables', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 255);
-            $table->char('background', 6);
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('unique_name',12)->after('password')->unique()->default('');
         });
     }
 
@@ -28,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kanban_tables');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('unique_name');
+        });
     }
 };

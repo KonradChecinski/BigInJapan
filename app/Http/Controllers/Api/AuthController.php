@@ -25,7 +25,10 @@ class AuthController extends Controller
                 [
                     'name' => 'required',
                     'email' => 'required|email|unique:users,email',
-                    'password' => Password::min(8)->letters()->mixedCase()->numbers()->symbols()
+                    'password' => [
+                            'required',
+                            Password::min(8)->letters()->mixedCase()->numbers()->symbols()
+                        ]
                 ]);
 
             if($validateUser->fails()){

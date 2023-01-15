@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\PanelController;
+use App\Http\Controllers\TableController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +33,28 @@ Route::group(['prefix' => '/auth'], function () {
 
 Route::group(['middleware' => 'auth:sanctum'], function (){
     Route::get('/', function (Request $request) {
-        return response()->json('Hello World!');
+        return response()->json('Działa!');
     });
+
+    Route::group(['prefix' => 'table'], function (){
+        Route::get('/', [TableController::class, 'index']);
+        Route::get('/get', [TableController::class, 'getUserTable']);
+
+        Route::get('/info/{table}', [TableController::class, 'getTableInfo']);
+        Route::put('/name/{table}', [TableController::class, 'updateName']);
+
+        Route::post('/', [TableController::class, 'create']);
+        Route::delete('/{id}', [TableController::class, 'destroy']);
+
+        Route::post('/share', [TableController::class, 'shareTable']);
+        Route::get('/shared/{table}', [TableController::class, 'getSharedUser']);
+        Route::put('/shared/{table}', [TableController::class, 'updateSharedUser']);
+        Route::delete('/shared/{table}', [TableController::class, 'deleteSharedUser']);
+    });
+
+    Route::group(['prefix' => 'panel'], function (){
+       Route::get('/', [PanelController::class, 'index']);
+    });
+
+
 });

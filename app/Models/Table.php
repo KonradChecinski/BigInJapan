@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class KanbanTable extends Model
+class Table extends Model
 {
     use HasFactory;
 
@@ -13,4 +13,8 @@ class KanbanTable extends Model
         'name',
         'background'
     ];
+
+    public function user(){
+        return $this->hasMany('TableUserPermission', 'table_id', 'id');
+    }
 }

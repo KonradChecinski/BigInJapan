@@ -13,14 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('panels', function (Blueprint $table) {
+        Schema::create('tables', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('table_id');
             $table->string('name', 255);
-            $table->unsignedBigInteger('order');
+            $table->char('background', 6);
             $table->timestamps();
-
-            $table->foreign('table_id')->references('id')->on('tables');
         });
     }
 
@@ -31,9 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('panels', function (Blueprint $table){
-           $table->dropForeign('panels_table_id_foreign');
-        });
-        Schema::dropIfExists('panels');
+        Schema::dropIfExists('tables');
     }
 };

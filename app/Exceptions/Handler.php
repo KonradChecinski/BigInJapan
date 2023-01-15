@@ -55,10 +55,15 @@ class Handler extends ExceptionHandler
                         'message' => $e->getMessage(),
                     ], $e->getCode());
                 }else{
+                    if($e->getMessage() == 'Unathenticated.'){
+                        $code = 401;
+                    }
+
                     return response()->json([
                         'status' => $e->getCode(),
                         'message' => $e->getMessage(),
-                    ], 200);
+                    ], $code);
+
                 }
             }
         });
