@@ -1,18 +1,18 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 
-const CardComponent = () => {
+const TaskComponent = () => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text style={{ color: 'white' }}>Card name</Text>
-        <Text style={{ color: 'white', fontSize: 8 }}>Card date</Text>
+        <Text style={{ color: 'white' }}>Task name</Text>
+        <Text style={{ color: 'white', fontSize: 8 }}>Task date</Text>
       </View>
     </View>
   )
 }
 
-export default CardComponent
+export default TaskComponent
 
 const styles = StyleSheet.create({
   container: {

@@ -5,17 +5,22 @@ import {
   StyleSheet,
   Pressable,
   Image,
+  TextInput,
 } from 'react-native'
 import React from 'react'
+import MenuButtonComponent from './MenuButtonComponent'
 
-const ListMenuComponent = ({ modalVisible, setModalVisible }) => {
+const PanelMenuComponent = ({
+  panelMenuVisible,
+  setPanelMenuVisible,
+}) => {
   return (
     <Modal
       animationType="slide"
-      visible={modalVisible}
+      visible={panelMenuVisible}
       onRequestClose={() => {
         {
-          setModalVisible(false)
+          setPanelMenuVisible(false)
           //   clearState()
         }
       }}
@@ -25,7 +30,7 @@ const ListMenuComponent = ({ modalVisible, setModalVisible }) => {
           style={styles.x_icon}
           hitSlop={30}
           onPress={() => {
-            setModalVisible(false)
+            setPanelMenuVisible(false)
             // clearState()
           }}
         >
@@ -37,16 +42,35 @@ const ListMenuComponent = ({ modalVisible, setModalVisible }) => {
 
         <Text style={styles.headerText}>
           {/* {myTable ? 'Moja tablica' : 'Udostępniona tablica'} */}
-          Test
+          Panel Name
         </Text>
       </View>
 
-      <View style={styles.container}></View>
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <View style={styles.panelInfoContainer}>
+            <Text style={styles.text}>Nazwa</Text>
+            <TextInput
+              style={styles.input}
+              // onChangeText={tableNameInputHandler}
+              // value={tableName}
+            />
+          </View>
+
+          <View>
+            <MenuButtonComponent text={'Zapisz'} color={'#E6B77D'} />
+            <MenuButtonComponent
+              text={'Usuń listę'}
+              color={'#435571'}
+            />
+          </View>
+        </View>
+      </View>
     </Modal>
   )
 }
 
-export default ListMenuComponent
+export default PanelMenuComponent
 
 const styles = StyleSheet.create({
   header: {
@@ -67,7 +91,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingTop: 40,
     paddingLeft: 25,
     paddingRight: 25,
@@ -75,21 +99,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#1E1E1E',
   },
   content: {
+    justifyContent: 'space-between',
+    height: '45%',
     marginBottom: 50,
   },
-  tableInfoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
+  panelInfoContainer: {
+    // flexDirection: 'row',
+    // alignItems: 'center',
+    // marginBottom: 10,
   },
   text: {
-    marginLeft: 15,
+    marginBottom: 5,
     color: '#C1DAFF',
     fontWeight: 'bold',
   },
   input: {
     width: '100%',
-    marginBottom: 20,
     padding: 5,
     paddingLeft: 10,
     backgroundColor: '#303D52',

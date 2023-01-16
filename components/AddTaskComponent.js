@@ -1,9 +1,14 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 import React from 'react'
 
-const AddCardComponent = () => {
+const AddTaskComponent = ({ setTaskMenuVisible }) => {
   return (
-    <Pressable style={{ width: '100%' }}>
+    <Pressable
+      style={{ width: '100%' }}
+      onPress={() => {
+        setTaskMenuVisible(true)
+      }}
+    >
       <View style={styles.container}>
         <Text style={styles.plus}>+</Text>
       </View>
@@ -11,7 +16,7 @@ const AddCardComponent = () => {
   )
 }
 
-export default AddCardComponent
+export default AddTaskComponent
 
 const styles = StyleSheet.create({
   container: {
