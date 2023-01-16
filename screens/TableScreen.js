@@ -3,47 +3,47 @@ import {
   StyleSheet,
   ScrollView,
   ActivityIndicator,
-  Text,
 } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { LinearGradient } from 'expo-linear-gradient'
 import AddButtonComponent from '../components/AddButtonComponent'
 import PanelMenuComponent from '../components/PanelMenuComponent'
-import TaskMenuComponent from '../components/TaskMenuComponent'
 import PanelComponent from '../components/PanelComponent'
 import { useState, useContext, useEffect } from 'react'
 import { AuthContext } from '../context/AuthContex'
 
 export default function TableScreen({ route, navigation }) {
   const [panelMenuVisible, setPanelMenuVisible] = useState(false)
-  const [taskMenuVisible, setTaskMenuVisible] = useState(false)
-  // const [myTable, setMyTable] = useState(true)
-  // const [newTable, setNewTable] = useState(false)
-  // const [tableIdState, setTableIdState] = useState(null)
-  // const { getData } = useContext(AuthContext)
   const [panels, setPanels] = useState(null)
+  const [panelName, setPanelName] = useState('')
+  const [newPanel, setNewPanel] = useState('')
+  const [panelIDState, setPanelIDState] = useState('')
+  const [panelOrder, setPanelOrder] = useState('')
   const { getData } = useContext(AuthContext)
-  const { tableID, tableName, tablePermission } = route.params
+  const { tableID, tableName } = route.params
+  const [tableScreenUpdated, setTableScreenUpdated] = useState(0)
 
   navigation.setOptions({ title: tableName })
 
   const fetchPanels = () => {
     getData(`/table/${tableID}/panel`, 'GET').then((response) => {
-      console.log('useEffect z TableScreen')
-      console.log(response.result)
       setPanels(response.result)
+      console.log(response.result)
+      console.log(panels)
     })
   }
   useEffect(() => {
+    console.log('useEffect z TableScreen')
     fetchPanels()
-  }, [])
+  }, [tableScreenUpdated])
 
   const addButtonHandler = () => {
+    setNewPanel(true)
     setPanelMenuVisible(true)
   }
 
-  const loaderOrEmpty = () => {
-    if (panels === []) {
+  const loaderOrEmpty = (data) => {
+    if (data === []) {
       return <></>
     } else
       return (
@@ -53,7 +53,7 @@ export default function TableScreen({ route, navigation }) {
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: 'black',
-            opacity: 0.5,
+            opacity: 0.3,
           }}
         >
           <ActivityIndicator size={'large'} />
@@ -64,14 +64,21 @@ export default function TableScreen({ route, navigation }) {
   return (
     <>
       <StatusBar style="light" />
+      {console.log('render')}
 
       <PanelMenuComponent
         panelMenuVisible={panelMenuVisible}
         setPanelMenuVisible={setPanelMenuVisible}
-      />
-      <TaskMenuComponent
-        taskMenuVisible={taskMenuVisible}
-        setTaskMenuVisible={setTaskMenuVisible}
+        setPanelName={setPanelName}
+        setPanelOrder={setPanelOrder}
+        panelName={panelName}
+        panelOrder={panelOrder}
+        newPanel={newPanel}
+        tableID={tableID}
+        panelID={panelIDState}
+        setPanelIDState={setPanelIDState}
+        setTableScreenUpdated={setTableScreenUpdated}
+        tableScreenUpdated={tableScreenUpdated}
       />
 
       <LinearGradient
@@ -91,14 +98,22 @@ export default function TableScreen({ route, navigation }) {
                     panelID={panel.id}
                     panelName={panel.name}
                     panelOrder={panel.order}
-                    setTaskMenuVisible={setTaskMenuVisible}
+                    tableID={tableID}
                     setPanelMenuVisible={setPanelMenuVisible}
+                    loaderOrEmpty={loaderOrEmpty}
+                    setPanelName={setPanelName}
+                    setPanelOrder={setPanelOrder}
+                    setNewPanel={setNewPanel}
+                    setPanelIDState={setPanelIDState}
+                    panels={panels}
+                    setTableScreenUpdated={setTableScreenUpdated}
+                    tableScreenUpdated={tableScreenUpdated}
                   />
                 )
               })}
             </>
           ) : (
-            loaderOrEmpty()
+            loaderOrEmpty(panels)
           )}
         </ScrollView>
       </LinearGradient>

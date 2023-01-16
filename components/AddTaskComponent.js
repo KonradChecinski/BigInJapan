@@ -1,11 +1,12 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 import React from 'react'
 
-const AddTaskComponent = ({ setTaskMenuVisible }) => {
+const AddTaskComponent = ({ setTaskMenuVisible, setNewTask }) => {
   return (
     <Pressable
       style={{ width: '100%' }}
       onPress={() => {
+        setNewTask(true)
         setTaskMenuVisible(true)
       }}
     >

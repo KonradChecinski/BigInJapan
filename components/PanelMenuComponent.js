@@ -6,14 +6,115 @@ import {
   Pressable,
   Image,
   TextInput,
+  ToastAndroid,
 } from 'react-native'
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import MenuButtonComponent from './MenuButtonComponent'
+import { AuthContext } from '../context/AuthContex'
 
 const PanelMenuComponent = ({
   panelMenuVisible,
   setPanelMenuVisible,
+
+  setPanelName,
+  setPanelOrder,
+  panelName,
+  panelOrder,
+  newPanel,
+
+  tableID,
+  panelID,
+  setPanelIDState,
+
+  setTableScreenUpdated,
+  tableScreenUpdated,
 }) => {
+  const { getData, setIsLoading } = useContext(AuthContext)
+
+  const clearState = () => {
+    setPanelName('')
+    setPanelOrder('')
+    setPanelIDState(null)
+  }
+
+  const panelNameInputHandler = (enteredText) => {
+    setPanelName(enteredText)
+  }
+  const panelOrderInputHandler = (enteredText) => {
+    setPanelOrder(enteredText)
+  }
+
+  const savePanel = () => {
+    setIsLoading(true)
+    if (!newPanel) {
+      getData(`/table/${tableID}/panel/${panelID}`, 'PUT', {
+        name: panelName,
+        order: panelOrder,
+      }).then((response) => {
+        console.log(response)
+        if (response.status === true) {
+          ToastAndroid.show(
+            'Panel został zapisany',
+            ToastAndroid.LONG
+          )
+          setTableScreenUpdated(tableScreenUpdated + 1)
+        } else {
+          ToastAndroid.show(
+            'Coś poszło nie tak, sprawdź połączenie z siecią',
+            ToastAndroid.LONG
+          )
+        }
+      })
+    } else {
+      if (panelName !== '') {
+        console.log(panelName)
+        getData(`/table/${tableID}/panel`, 'POST', {
+          name: panelName,
+        }).then((response) => {
+          console.log(response)
+          if (response.status === true) {
+            ToastAndroid.show(
+              'Panel został utworzony',
+              ToastAndroid.LONG
+            )
+            setTableScreenUpdated(tableScreenUpdated + 1)
+            clearState()
+            setPanelMenuVisible(false)
+          } else {
+            ToastAndroid.show(
+              'Coś poszło nie tak, sprawdź połączenie z siecią',
+              ToastAndroid.LONG
+            )
+          }
+        })
+      } else {
+        ToastAndroid.show('Podaj nazwę panelu', ToastAndroid.LONG)
+      }
+    }
+    setIsLoading(false)
+  }
+  const deletePanel = () => {
+    getData(`/table/${tableID}/panel/${panelID}`, 'DELETE').then(
+      (response) => {
+        if (response.status === true) {
+          console.log(response)
+          ToastAndroid.show(
+            'Panel został usunięty',
+            ToastAndroid.LONG
+          )
+          setTableScreenUpdated(tableScreenUpdated + 1)
+          setPanelMenuVisible(false)
+          clearState()
+        } else {
+          ToastAndroid.show(
+            'Coś poszło nie tak, sprawdź połączenie z siecią',
+            ToastAndroid.LONG
+          )
+        }
+      }
+    )
+  }
+
   return (
     <Modal
       animationType="slide"
@@ -21,7 +122,7 @@ const PanelMenuComponent = ({
       onRequestClose={() => {
         {
           setPanelMenuVisible(false)
-          //   clearState()
+          clearState()
         }
       }}
     >
@@ -31,7 +132,7 @@ const PanelMenuComponent = ({
           hitSlop={30}
           onPress={() => {
             setPanelMenuVisible(false)
-            // clearState()
+            clearState()
           }}
         >
           <Image
@@ -41,8 +142,7 @@ const PanelMenuComponent = ({
         </Pressable>
 
         <Text style={styles.headerText}>
-          {/* {myTable ? 'Moja tablica' : 'Udostępniona tablica'} */}
-          Panel Name
+          {newPanel ? 'Dodaj panel' : 'Modyfikuj panel'}
         </Text>
       </View>
 
@@ -52,17 +152,39 @@ const PanelMenuComponent = ({
             <Text style={styles.text}>Nazwa</Text>
             <TextInput
               style={styles.input}
-              // onChangeText={tableNameInputHandler}
-              // value={tableName}
+              onChangeText={panelNameInputHandler}
+              value={panelName}
             />
+            {!newPanel && (
+              <>
+                <Text style={[styles.text, { marginTop: 10 }]}>
+                  Kolejność
+                </Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder={'Wpisz liczbę od 0 w górę'}
+                  placeholderTextColor={'white'}
+                  keyboardType={'numeric'}
+                  onChangeText={panelOrderInputHandler}
+                  value={panelOrder.toString()}
+                />
+              </>
+            )}
           </View>
 
           <View>
-            <MenuButtonComponent text={'Zapisz'} color={'#E6B77D'} />
             <MenuButtonComponent
-              text={'Usuń listę'}
-              color={'#435571'}
+              text={'Zapisz'}
+              color={'#E6B77D'}
+              onPressButton={savePanel}
             />
+            {!newPanel && (
+              <MenuButtonComponent
+                text={'Usuń panel'}
+                color={'#435571'}
+                onPressButton={deletePanel}
+              />
+            )}
           </View>
         </View>
       </View>

@@ -1,12 +1,14 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 
-const TaskComponent = () => {
+const TaskComponent = ({ taskID, taskName, dateTime }) => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text style={{ color: 'white' }}>Task name</Text>
-        <Text style={{ color: 'white', fontSize: 8 }}>Task date</Text>
+        <Text style={{ color: 'white' }}>{taskName}</Text>
+        <Text style={{ color: 'white', fontSize: 8 }}>
+          {dateTime}
+        </Text>
       </View>
     </View>
   )
