@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\TableController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -56,5 +57,22 @@ Route::group(['middleware' => 'auth:sanctum'], function (){
        Route::get('/', [PanelController::class, 'index']);
     });
 
+    Route::group(['prefix' => 'table/{table}/panel'], function (){
+        Route::get('/', [PanelController::class, 'getTablePanels']);
+        Route::post('/', [PanelController::class, 'create']);
+        Route::delete('/{panel}', [PanelController::class, 'destroy']);
+        Route::put('/{panel}', [PanelController::class, 'update']);
+    });
 
+    Route::group(['prefix' => 'tasks'], function (){
+        Route::get('/', [TaskController::class, 'index']);
+    });
+    Route::group(['prefix' => 'table/{table}/panel/{panel}/task'], function (){
+        Route::get('/', [TaskController::class, 'getPanelTasks']);
+        Route::post('/', [TaskController::class, 'create']);
+        Route::delete('/{task}', [TaskController::class, 'destroy']);
+        Route::put('/{task}', [TaskController::class, 'update']);
+        Route::put('/{task}/changePanel', [TaskController::class, 'changePanel']);
+        Route::put('/{task}/changeOrder', [TaskController::class, 'changeOrder']);
+    });
 });

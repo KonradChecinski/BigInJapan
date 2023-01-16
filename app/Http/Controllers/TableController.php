@@ -36,7 +36,7 @@ class TableController extends Controller
     {
         $validateName = Validator::make($request->all(),
             [
-                'name' => 'required|min:5',
+                'name' => 'required|min:3',
             ]);
 
         if($validateName->fails()){
@@ -44,7 +44,7 @@ class TableController extends Controller
                 'status' => false,
                 'message' => 'validation error',
                 'errors' => $validateName->errors()
-            ], 401);
+            ], 400);
         }
 
 
@@ -161,7 +161,7 @@ class TableController extends Controller
                 'status' => false,
                 'message' => 'validation error',
                 'errors' => $validateReqest->errors()
-            ], 401);
+            ], 400);
         }
         $userId = User::where('unique_name', '=', $request->user)->first()->id;
 
@@ -313,7 +313,7 @@ class TableController extends Controller
     {
         $validateName = Validator::make($request->all(),
             [
-                'name' => 'required|min:5',
+                'name' => 'required|min:3',
             ]);
 
         if($validateName->fails()){
@@ -351,7 +351,7 @@ class TableController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $tables = TableUserPermission::select('table_id')->where('user_id', '=', $request->user()->id)->where('table_id', '=', $id)->where('permission', '=', '1')->get();
+        $tables = TableUserPermission::select('table_id')->where('user_id', '=', $request->user()->id)->where('table_id', '=', $id)->whereIn('permission', [1,2])->get();
         if($tables->isEmpty()){
             return response()->json([
                 'status' => false,
@@ -361,7 +361,7 @@ class TableController extends Controller
 
 
         TableUserPermission::where('table_id', '=', $id)->delete();
-        Table::destroy($id);
+        Table::find($id)->delete();
 
         return response()->json([
             'status' => true,

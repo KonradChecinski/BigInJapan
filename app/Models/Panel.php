@@ -10,7 +10,7 @@ class Panel extends Model
     use HasFactory;
 
     protected $fillable = [
-        'kanban_tables_id',
+        'table_id',
         'name',
         'order'
     ];
